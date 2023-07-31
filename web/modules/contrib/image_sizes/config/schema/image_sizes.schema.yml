@@ -1,0 +1,31 @@
+field.formatter.settings.image_sizes_formatter:
+  type: mapping
+  label: 'Dynamic image sizes formatter settings'
+  mapping:
+    image_style_placeholder:
+      type: string
+      label: 'Text Length'
+    image_styles:
+      type: sequence
+      label: 'Text Length'
+      sequence:
+        type: string
+    load_invisible:
+      type: integer
+      label: 'Load image when not in viewport'
+    fallback_style:
+      type: string
+      label: 'Text Length'
+
+
+
+field.formatter.settings.image_sizes_preset_formatter:
+  type: mapping
+  label: 'Preset image sizes formatter settings'
+  mapping:
+    preset:
+      type: string
+      label: 'Image preset'
+    load_invisible:
+      type: integer
+      label: 'Load image when not in viewport'

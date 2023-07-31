@@ -1,0 +1,10 @@
+name: Sticky Nav
+type: module
+description: 'Module to make navigation on the website sticky when you scroll down the page.'
+core_version_requirement: ^8.8 || ^9 || ^10
+configure: stickynav.set_admin
+
+# Information added by Drupal.org packaging script on 2022-11-07
+version: '8.x-1.4'
+project: 'stickynav'
+datestamp: 1667855293

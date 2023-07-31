@@ -1,0 +1,21 @@
+uuid: 90ea15a8-faef-48c7-b5c0-f2aacaeaba60
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_1300
+label: 'Landscape (1300x975)'
+effects:
+  9de96fac-ea95-447a-b289-34147af50684:
+    uuid: 9de96fac-ea95-447a-b289-34147af50684
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1300
+      height: 975
+      anchor: center-center
+  5a6ef0a4-d116-46d8-a528-f45bc198d00f:
+    uuid: 5a6ef0a4-d116-46d8-a528-f45bc198d00f
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

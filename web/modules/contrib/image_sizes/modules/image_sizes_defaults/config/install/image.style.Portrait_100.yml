@@ -1,0 +1,21 @@
+uuid: aa072b56-2fa9-4770-8dc2-9fd2ed8a3794
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_100
+label: 'Portrait (99x132)'
+effects:
+  c727d184-6ee8-42cb-b4dc-5ccf2925b50d:
+    uuid: c727d184-6ee8-42cb-b4dc-5ccf2925b50d
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 99
+      height: 132
+      anchor: center-center
+  30e1e14d-60b2-450c-8a1e-d7f3c7765990:
+    uuid: 30e1e14d-60b2-450c-8a1e-d7f3c7765990
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

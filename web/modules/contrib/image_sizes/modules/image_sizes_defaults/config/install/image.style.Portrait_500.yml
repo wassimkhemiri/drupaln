@@ -1,0 +1,21 @@
+uuid: 7c89a764-7d9b-4412-b876-2d200cd3fe51
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_500
+label: 'Portrait (498x664)'
+effects:
+  714563f8-7ba9-43d8-bc3d-116c901a5f10:
+    uuid: 714563f8-7ba9-43d8-bc3d-116c901a5f10
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 498
+      height: 664
+      anchor: center-center
+  9053f872-2bd1-41bb-abba-b8e07b2bc737:
+    uuid: 9053f872-2bd1-41bb-abba-b8e07b2bc737
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

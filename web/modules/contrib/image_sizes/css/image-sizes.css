@@ -1,0 +1,39 @@
+img.image-sizes {
+  max-width: 100%;
+}
+
+img.image-sizes.pre-load {
+  width: 100%;
+  height: auto;
+}
+
+
+img.image-sizes.fade-in-on-load {
+  animation-duration: 2s;
+  animation-name: fadeInOnLoad;
+}
+
+img.image-sizes.pre-load {
+  animation: loadingAnimation 2s infinite;
+}
+
+@keyframes fadeInOnLoad {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes loadingAnimation {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}

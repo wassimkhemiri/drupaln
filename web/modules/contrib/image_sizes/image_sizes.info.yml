@@ -1,0 +1,14 @@
+name: "Image sizes"
+type: module
+description: "Image style selection based on parent element width."
+core_version_requirement: ^9 || ^10
+package: "Media"
+configure: entity.image_sizes_preset_entity.collection
+
+dependencies:
+  - drupal:image
+
+# Information added by Drupal.org packaging script on 2022-10-31
+version: '3.0.0'
+project: 'image_sizes'
+datestamp: 1667222501

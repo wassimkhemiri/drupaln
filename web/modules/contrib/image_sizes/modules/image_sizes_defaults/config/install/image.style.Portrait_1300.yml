@@ -1,0 +1,21 @@
+uuid: b130b766-4c9a-4d0c-addf-ecb05e8ccfc9
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_1300
+label: 'Portrait (1299x1732)'
+effects:
+  5d24818c-da6c-4308-96e0-b1f0be3ba5f5:
+    uuid: 5d24818c-da6c-4308-96e0-b1f0be3ba5f5
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1299
+      height: 1732
+      anchor: center-center
+  b82e4316-c787-4824-9172-98fa738fcd75:
+    uuid: b82e4316-c787-4824-9172-98fa738fcd75
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

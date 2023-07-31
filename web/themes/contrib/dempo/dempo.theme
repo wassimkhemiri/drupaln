@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @file
+ * The primary PHP file for the dempo theme.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Xss;
+use Drupal\block\Entity\Block;
+use Drupal\Core\Url;
+
+
+/**
+ * Implements hook_preprocess_HOOK() for page.html.twig.
+ */
+ 
+function dempo_preprocess_page(&$variables) {
+  $variables['header_top_fluid'] = theme_get_setting('header_top_fluid'); $variables['header_top_fluid_class'] = $variables['header_top_fluid'] ? 'container-fluid' : 'container';
+  $variables['header_fluid']     = theme_get_setting('header_fluid');     $variables['header_fluid_class']     = $variables['header_fluid']     ? 'container-fluid' : 'container';
+  $variables['header_bot_fluid'] = theme_get_setting('header_bot_fluid'); $variables['header_bot_fluid_class'] = $variables['header_bot_fluid'] ? 'container-fluid' : 'container';
+
+  $variables['footer_top_fluid'] = theme_get_setting('footer_top_fluid'); $variables['footer_top_fluid_class'] = $variables['footer_top_fluid'] ? 'container-fluid' : 'container';
+  $variables['footer_fluid']     = theme_get_setting('footer_fluid');     $variables['footer_fluid_class']     = $variables['footer_fluid']     ? 'container-fluid' : 'container';
+  $variables['footer_bot_fluid'] = theme_get_setting('footer_bot_fluid'); $variables['footer_bot_fluid_class'] = $variables['footer_bot_fluid'] ? 'container-fluid' : 'container';
+}
+
+function dempo_preprocess_block(&$variables) {
+  $variables['navbar_class'] = theme_get_setting('navbar_class');
+  $variables['logo_path'] = '/' . \Drupal::config('dempo.settings')->get('logo.path');
+  
+  $block = \Drupal\block\Entity\Block::load('dempo_search')->getPlugin()->build();
+  $variables['dempo_search'] = $block;
+}
+
+/**
+ * Implements hook_form_system_theme_settings_alter().
+ */
+function dempo_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
+  // Lock Fluid container option in the General Bootstrap theme settings.
+  $form['general']['container']['fluid_container']['#default_value'] = 1;
+  $form['general']['container']['fluid_container']['#disabled'] = FALSE;
+  $form['general']['container']['fluid_container']['#description'] = t('dempo theme works with container and container-fluid.');
+
+  // Theme Settings
+  
+    $form['dempo_settings'] = [
+        '#type' => 'vertical_tabs',
+        '#title' => t('Dempo Settings'),
+    ];
+    
+    $form['navbar'] = [
+        '#type' => 'details',
+        '#title' => t('Navbar'),
+        '#group' => 'dempo_settings',
+    ];
+    
+    $form['navbar']['navbar_class'] = [
+        '#type' => 'textfield',
+        '#title' => t('Navbar Class'),
+        '#default_value' => theme_get_setting('navbar_class'),
+        '#description' => t('Navbar Class: navbar-expand-lg bg-light'),
+    ];
+    
+    $form['header'] = [
+        '#type' => 'details',
+        '#title' => t('Header'),
+        '#group' => 'dempo_settings',
+    ];
+    
+    $form['header']['header_top_fluid'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Use fluid mode for Header Top'),
+        '#default_value' => theme_get_setting('header_top_fluid'),
+        '#description' => t('Select Header mode to fluid or boxed'),
+    ];
+    
+    $form['header']['header_fluid'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Use fluid mode for Header'),
+        '#default_value' => theme_get_setting('header_fluid'),
+        '#description' => t('Select Header mode to fluid or boxed'),
+    ];
+    
+    $form['header']['header_bot_fluid'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Use fluid mode for Header Bottom'),
+        '#default_value' => theme_get_setting('header_bot_fluid'),
+        '#description' => t('Select Header mode to fluid or boxed'),
+    ];
+    
+    $form['footer'] = [
+        '#type' => 'details',
+        '#title' => t('Footer'),
+        '#group' => 'dempo_settings',
+    ];
+    
+    $form['footer']['footer_top_fluid'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Use fluid mode for Footer Top'),
+        '#default_value' => theme_get_setting('footer_top_fluid'),
+        '#description' => t('Select Footer mode to fluid or boxed'),
+    ];
+    
+    $form['footer']['footer_fluid'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Use fluid mode for Footer'),
+        '#default_value' => theme_get_setting('footer_fluid'),
+        '#description' => t('Select Footer mode to fluid or boxed'),
+    ];
+    
+    $form['footer']['footer_bot_fluid'] = [
+        '#type' => 'checkbox',
+        '#title' => t('Use fluid mode for Footer Bottom'),
+        '#default_value' => theme_get_setting('footer_bot_fluid'),
+        '#description' => t('Select Footer mode to fluid or boxed'),
+    ];
+    
+    $form['custom_css'] = [
+        '#type' => 'details',
+        '#title' => t('Custom CSS'),
+        '#group' => 'dempo_settings',
+    ];
+    
+    $form['custom_css']['custom_css_value'] = [
+        '#type' => 'textarea',
+        '#title' => t('Custom CSS'),
+        '#default_value' => theme_get_setting('custom_css_value'),
+        '#description' => t('Enter custom CSS.'),
+        '#attributes' => array('class' => array('code_css') ),
+    ];
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for HTML document templates.
+ *
+ * Adds body classes if certain regions have content.
+ */
+ 
+function dempo_preprocess_html(&$variables) {
+  if(theme_get_setting('custom_css_value') ){
+    $custom_style = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', theme_get_setting('custom_css_value') );
+    $custom_style = str_replace( array( "\r\n", "\r", "\n", "\t", '  ', '   ', '    ' ), '', $custom_style );
+    $variables['custom_css_value'] =  $custom_style;
+  }
+}
+

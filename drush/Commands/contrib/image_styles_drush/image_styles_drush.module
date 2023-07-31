@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains image_styles_drush.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function image_styles_drush_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.image_styles_drush':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides image styles drush commands.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

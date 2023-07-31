@@ -1,0 +1,30 @@
+uuid: 16dbd9dd-b027-496f-be5a-3ad1e66c25aa
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_effects
+name: Landscape_preload
+label: 'Landscape Preload'
+effects:
+  6e2dc91c-637d-4945-969d-26bbf2f1a627:
+    uuid: 6e2dc91c-637d-4945-969d-26bbf2f1a627
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 12
+      height: 9
+      anchor: center-center
+  c00758f7-21b7-4998-b9de-074ca76ad504:
+    uuid: c00758f7-21b7-4998-b9de-074ca76ad504
+    id: image_effects_gaussian_blur
+    weight: null
+    data:
+      radius: 3
+      sigma: null
+  4f44d1dd-c714-4c4a-a426-e86c2fdbc852:
+    uuid: 4f44d1dd-c714-4c4a-a426-e86c2fdbc852
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

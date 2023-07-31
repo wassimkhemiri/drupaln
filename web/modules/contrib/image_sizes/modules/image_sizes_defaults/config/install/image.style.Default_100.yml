@@ -1,0 +1,21 @@
+uuid: bc5f1d3c-3029-47ea-8638-91a4ce1d0b7c
+langcode: en
+status: true
+dependencies: {  }
+name: Default_100
+label: 'Default 100'
+effects:
+  24299b74-8627-4f32-a657-e6b1081796e5:
+    uuid: 24299b74-8627-4f32-a657-e6b1081796e5
+    id: image_scale
+    weight: null
+    data:
+      width: 100
+      height: null
+      upscale: false
+  7e28f217-7a81-4187-bca9-a10aeebc7418:
+    uuid: 7e28f217-7a81-4187-bca9-a10aeebc7418
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

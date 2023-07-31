@@ -1,0 +1,99 @@
+/* NAVIGATION */
+
+.dropdown:hover .dropdown-menu{ display: block;}
+.nav-link { padding: 15px 20px !important; }
+.nav-link.is-active, .nav-link:hover { background: var(--bgcolor); color: #eee; }
+#block-dempo-main-menu { height: 54px;  background: var(--bs-dark); }
+
+.nav-item a { color: #eee; }
+.dropdown-menu .nav-item a { color: #666; }
+.nav-item.dropdown a:hover { color: #eee; }
+.navbar-nav li.dropdown-menu { padding: 0; border: none; }
+.navbar-nav .dropdown-menu { box-shadow: 2px 2px 10px rgba(0,0,0,0.5); border-radius: 0; padding: 0; border: none;}
+
+
+.navbar-brand {
+	background: white;
+	margin: -0;
+	padding-right: 15px;
+	height: 54px;
+}
+
+.navbar-toggler {
+	border: none;
+	border-radius: 0;
+	box-shadow: none !important;
+}
+
+@media (max-width: 1200px) {
+    .dropdown:hover .dropdown-menu { display: none; }
+    #block-dempo-main-menu         { height: auto; background: white !important; }
+    .navbar-toggler                { background: var(--bs-dark); }
+    .navbar-nav.dempo-navbar-nav   { background: var(--bs-dark); }
+    .navbar-brand img { }
+}
+
+.btn-close.btn-close-white {
+	margin-right: 8px;
+	border: solid 1px;
+	border-radius: 0;
+}
+
+/* SEARCH */
+
+#block-dempo-search {
+	background: var(--bs-dark);
+}
+
+.search-icon {
+	color: #eee;
+	width: 30px;
+	height: 30px;
+	margin-top: 12px;
+	padding: 3px 7px;
+	border: solid 1px #eee;
+	border-radius: 50%;
+}
+
+.search-icon:hover {
+	background: #eee;
+	color: black;
+}
+
+.search-contents {
+	display: none;
+}
+
+.search-contents {
+	position: absolute;
+	border: solid 1px #ccc;
+	right: 0;
+	padding: 0 16px;
+	width: 330px;
+	background: #eee;
+	z-index: 100;
+	margin-top: 12px;
+}
+
+.search-contents .js-form-item.form-item {
+	margin: 16px;
+	float: left;
+}
+
+@media (max-width: 1200px) {
+    #block-dempo-search {
+        background: transparent;
+    	margin-left: -12px;
+    }
+    .search-icon {
+    	color: #222;
+    	width: 30px;
+    	height: 30px;
+    	margin-top: 20px;
+    	padding: 3px 7px;
+    	border: solid 1px #222;
+    	border-radius: 50%;
+    	margin-right: ;
+    }    
+}
+    

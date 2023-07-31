@@ -1,0 +1,21 @@
+uuid: 1118f757-21a6-4063-ae98-562ba19851c0
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_400
+label: 'Landscape (400x300)'
+effects:
+  3a87ebbd-daa2-4e35-af8e-8485413231d0:
+    uuid: 3a87ebbd-daa2-4e35-af8e-8485413231d0
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 400
+      height: 300
+      anchor: center-center
+  69e68c46-fe4e-4a21-af9c-ac9701c907e9:
+    uuid: 69e68c46-fe4e-4a21-af9c-ac9701c907e9
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

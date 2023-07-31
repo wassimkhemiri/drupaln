@@ -1,0 +1,21 @@
+uuid: fc0b800b-27a0-4019-82e8-157086a20bc0
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_700
+label: 'Portrait (699x932)'
+effects:
+  9dd9996f-ad7a-481e-81e5-eabd082c6703:
+    uuid: 9dd9996f-ad7a-481e-81e5-eabd082c6703
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 699
+      height: 932
+      anchor: center-center
+  297ad62b-da20-43d4-8e66-f131c320aac5:
+    uuid: 297ad62b-da20-43d4-8e66-f131c320aac5
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

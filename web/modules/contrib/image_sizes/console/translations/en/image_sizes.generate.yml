@@ -1,0 +1,10 @@
+description: 'Image style generation.'
+options:
+    ratio: 'Ratio for style'
+arguments:
+    name: 'Name of the image style'
+    min: 'Minimal pixel size'
+    max: 'Maximal pixel size'
+    step: 'Steps between each style'
+messages:
+    success: 'Image style @style successfully generated.'

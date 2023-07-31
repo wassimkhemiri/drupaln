@@ -1,0 +1,15 @@
+name: "Image sizes defaults"
+type: module
+description: "Add some default for image sizes."
+core_version_requirement: ^9 || ^10
+package: "Media"
+configure: entity.image_sizes_preset_entity.collection
+
+dependencies:
+  - image_sizes:image_sizes
+  - image_effects:image_effects
+
+# Information added by Drupal.org packaging script on 2022-10-31
+version: '3.0.0'
+project: 'image_sizes'
+datestamp: 1667222501

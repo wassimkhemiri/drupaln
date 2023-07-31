@@ -1,0 +1,39 @@
+uuid: 0279600d-ad74-4648-963c-1447e86a10c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.Portrait_100
+    - image.style.Portrait_1000
+    - image.style.Portrait_1100
+    - image.style.Portrait_1200
+    - image.style.Portrait_1300
+    - image.style.Portrait_1400
+    - image.style.Portrait_200
+    - image.style.Portrait_300
+    - image.style.Portrait_400
+    - image.style.Portrait_500
+    - image.style.Portrait_600
+    - image.style.Portrait_700
+    - image.style.Portrait_800
+    - image.style.Portrait_900
+    - image.style.Portrait_preload
+id: portrait
+label: Portrait
+preload: Portrait_preload
+styles:
+  Portrait_1400: Portrait_1400
+  Portrait_1300: Portrait_1300
+  Portrait_1200: Portrait_1200
+  Portrait_1100: Portrait_1100
+  Portrait_1000: Portrait_1000
+  Portrait_900: Portrait_900
+  Portrait_800: Portrait_800
+  Portrait_700: Portrait_700
+  Portrait_600: Portrait_600
+  Portrait_500: Portrait_500
+  Portrait_400: Portrait_400
+  Portrait_300: Portrait_300
+  Portrait_200: Portrait_200
+  Portrait_100: Portrait_100
+fallback: original

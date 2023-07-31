@@ -1,0 +1,21 @@
+uuid: 2605f3ad-fed2-4913-9207-1fc2961d56e8
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_200
+label: 'Landscape (200x150)'
+effects:
+  767ade18-1712-45f6-bb99-a2e5b45ebcb8:
+    uuid: 767ade18-1712-45f6-bb99-a2e5b45ebcb8
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 200
+      height: 150
+      anchor: center-center
+  0eb70750-6e81-42c9-9274-21835e644047:
+    uuid: 0eb70750-6e81-42c9-9274-21835e644047
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

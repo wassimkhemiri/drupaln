@@ -1,0 +1,30 @@
+uuid: 59523db6-305f-4f66-a201-d6ac7e54c076
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_effects
+name: Portrait_preload
+label: 'Portrait Preload'
+effects:
+  22e5619e-84a2-4543-b02d-fc39f6e2354b:
+    uuid: 22e5619e-84a2-4543-b02d-fc39f6e2354b
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 15
+      height: 20
+      anchor: center-center
+  bd18117c-402b-4124-919d-74c6457369a2:
+    uuid: bd18117c-402b-4124-919d-74c6457369a2
+    id: image_effects_gaussian_blur
+    weight: null
+    data:
+      radius: 3
+      sigma: null
+  44ea83a6-81a1-4e66-9b48-6f095540b55f:
+    uuid: 44ea83a6-81a1-4e66-9b48-6f095540b55f
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

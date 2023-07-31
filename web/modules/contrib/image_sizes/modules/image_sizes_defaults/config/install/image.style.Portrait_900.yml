@@ -1,0 +1,21 @@
+uuid: 441ef5af-0002-460c-b16e-83d6cd953c33
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_900
+label: 'Portrait (900x1200)'
+effects:
+  f72aa083-fa96-4c14-ad8c-38f76f74435e:
+    uuid: f72aa083-fa96-4c14-ad8c-38f76f74435e
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 900
+      height: 1200
+      anchor: center-center
+  da9c8cf8-6bcf-4452-91e9-63178a2a5ad5:
+    uuid: da9c8cf8-6bcf-4452-91e9-63178a2a5ad5
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

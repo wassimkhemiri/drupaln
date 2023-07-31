@@ -1,0 +1,22 @@
+{
+    "name": "drupal/image_sizes",
+    "type": "drupal-module",
+    "description": "Image sizes",
+    "keywords": [
+        "Drupal"
+    ],
+    "license": "GPL-2.0+",
+    "homepage": "https://www.drupal.org/project/image_sizes",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/image_sizes",
+        "source": "http://cgit.drupalcode.org/image_sizes"
+    },
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^9"
+            }
+        }
+    }
+}

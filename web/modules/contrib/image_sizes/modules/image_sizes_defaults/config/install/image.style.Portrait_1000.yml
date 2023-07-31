@@ -1,0 +1,21 @@
+uuid: b74dd24d-a464-4ba3-a2ee-d983d3e56a07
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_1000
+label: 'Portrait (999x1332)'
+effects:
+  6952aea7-dc97-4af1-b2d2-3b6949c7b1af:
+    uuid: 6952aea7-dc97-4af1-b2d2-3b6949c7b1af
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 999
+      height: 1332
+      anchor: center-center
+  6be1cfd5-4c05-43a4-90b8-a6f35583b310:
+    uuid: 6be1cfd5-4c05-43a4-90b8-a6f35583b310
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

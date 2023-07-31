@@ -1,0 +1,21 @@
+uuid: 7a8e1df8-1513-4ba1-9c51-7267cf8c136c
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_500
+label: 'Landscape (500x375)'
+effects:
+  a181f90b-0e03-4f1a-a6b0-49512c09d70f:
+    uuid: a181f90b-0e03-4f1a-a6b0-49512c09d70f
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 500
+      height: 375
+      anchor: center-center
+  31bb9d85-04db-4212-8738-fc9ac50655f3:
+    uuid: 31bb9d85-04db-4212-8738-fc9ac50655f3
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

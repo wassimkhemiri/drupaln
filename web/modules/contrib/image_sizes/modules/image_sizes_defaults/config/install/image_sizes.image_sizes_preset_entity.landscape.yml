@@ -1,0 +1,39 @@
+uuid: d9bae1cb-974f-4798-adb6-3be47337f81c
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.Landscape_100
+    - image.style.Landscape_1000
+    - image.style.Landscape_1100
+    - image.style.Landscape_1200
+    - image.style.Landscape_1300
+    - image.style.Landscape_1400
+    - image.style.Landscape_200
+    - image.style.Landscape_300
+    - image.style.Landscape_400
+    - image.style.Landscape_500
+    - image.style.Landscape_600
+    - image.style.Landscape_700
+    - image.style.Landscape_800
+    - image.style.Landscape_900
+    - image.style.Landscape_preload
+id: landscape
+label: Landscape
+preload: Landscape_preload
+styles:
+  Landscape_1400: Landscape_1400
+  Landscape_1300: Landscape_1300
+  Landscape_1200: Landscape_1200
+  Landscape_1100: Landscape_1100
+  Landscape_1000: Landscape_1000
+  Landscape_900: Landscape_900
+  Landscape_800: Landscape_800
+  Landscape_700: Landscape_700
+  Landscape_600: Landscape_600
+  Landscape_500: Landscape_500
+  Landscape_400: Landscape_400
+  Landscape_300: Landscape_300
+  Landscape_200: Landscape_200
+  Landscape_100: Landscape_100
+fallback: original

@@ -1,0 +1,21 @@
+uuid: 0977a0f8-9476-478a-ab4a-94cf25941e5f
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_800
+label: 'Portrait (798x1064)'
+effects:
+  9d52e42b-a370-47fc-8399-02cfe744ca37:
+    uuid: 9d52e42b-a370-47fc-8399-02cfe744ca37
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 798
+      height: 1064
+      anchor: center-center
+  f33bb8ef-ae4d-4115-a0cc-0843a984b9b9:
+    uuid: f33bb8ef-ae4d-4115-a0cc-0843a984b9b9
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

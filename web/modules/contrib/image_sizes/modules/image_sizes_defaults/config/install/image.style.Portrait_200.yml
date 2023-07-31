@@ -1,0 +1,21 @@
+uuid: 71ad8667-e8a1-4982-812b-2c40e9a48641
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_200
+label: 'Portrait (198x264)'
+effects:
+  56ce7845-debe-4cbf-b74e-7e3926b605bb:
+    uuid: 56ce7845-debe-4cbf-b74e-7e3926b605bb
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 198
+      height: 264
+      anchor: center-center
+  211fc2d6-c8de-48aa-b239-6482cbc40c11:
+    uuid: 211fc2d6-c8de-48aa-b239-6482cbc40c11
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

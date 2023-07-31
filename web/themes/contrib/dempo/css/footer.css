@@ -1,0 +1,29 @@
+.footer_top-wrapper {
+	padding: 24px;
+}
+
+.footer_wrapper {
+	padding: 50px;
+	background: #f2f3f5;
+}
+
+.footer_bot-wrapper {
+	background: #EAEAEA;
+	padding: 24px;
+	color: #666;
+}
+
+.footer .block {
+    padding-right: 32px;
+}
+
+@media (max-width: 767px) {
+  .footer .footer-bottom {
+    text-align: center;
+  }
+  .footer .footer-bottom .footer-bottom-left,
+  .footer .footer-bottom .footer-bottom-right {
+    float: none;
+    margin-bottom: 5px;
+  }
+}

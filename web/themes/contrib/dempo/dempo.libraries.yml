@@ -1,0 +1,25 @@
+global-styling:
+  css:
+    theme:
+      lib/bs5/css/bootstrap.min.css: {}
+      lib/bs5/css/bootstrap.grid.css: {}
+      css/colorscheme.css: {}
+      css/navigation.css: {}
+      css/component.css: {}
+      css/header.css: {}
+      css/content.css: {}
+      css/footer.css: {}
+      css/styles.css: {}
+      css/advanced.css: {}
+      
+      css/components/views-exposed-form.css: {}
+      css/components/form.css: {}
+      css/components/tables.css: {}
+      css/components/views_ui.admin.theme.css: {}
+      
+      css/custom.css: {}
+  js:
+    js/dempo.header.js: {}
+    js/dempo.anchor_scroll.js: {}
+    js/advanced.js: {}
+    lib/bs5/js/bootstrap.bundle.min.js: {}

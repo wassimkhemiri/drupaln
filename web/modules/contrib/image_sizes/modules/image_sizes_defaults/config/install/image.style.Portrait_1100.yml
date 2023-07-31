@@ -1,0 +1,21 @@
+uuid: 581cdc6d-050e-491f-b006-b4842e6dbc25
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_1100
+label: 'Portrait (1098x1464)'
+effects:
+  ba787d66-a30b-48c5-9ea3-118a875edfd3:
+    uuid: ba787d66-a30b-48c5-9ea3-118a875edfd3
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1098
+      height: 1464
+      anchor: center-center
+  5217d516-2aa6-4b2d-aaf7-5d21c5d79312:
+    uuid: 5217d516-2aa6-4b2d-aaf7-5d21c5d79312
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

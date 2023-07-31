@@ -1,0 +1,21 @@
+uuid: 0d415827-49ee-45d6-8ee9-80a579e56438
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_600
+label: 'Portrait (600x800)'
+effects:
+  4cec2fb4-69df-4257-a6c1-b61186d5cdb0:
+    uuid: 4cec2fb4-69df-4257-a6c1-b61186d5cdb0
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 600
+      height: 800
+      anchor: center-center
+  409fe1dc-e059-45ed-8c7b-7fa6e34d041b:
+    uuid: 409fe1dc-e059-45ed-8c7b-7fa6e34d041b
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

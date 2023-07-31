@@ -1,0 +1,6 @@
+services:
+  image_styles_drush.image.commands:
+    class: \Drupal\image_styles_drush\Commands\ImageCommands
+    arguments: ['@plugin.manager.image.effect', '@entity_type.manager', '@image_styles_drush.image']
+    tags:
+      - { name: drush.command }

@@ -1,0 +1,30 @@
+uuid: e61194e8-d491-4c21-adb4-99518088b2f6
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_effects
+name: Default_preload
+label: 'Default Preload'
+effects:
+  73c794e3-6601-4be6-a517-919c8656daec:
+    uuid: 73c794e3-6601-4be6-a517-919c8656daec
+    id: image_scale
+    weight: null
+    data:
+      width: 15
+      height: null
+      upscale: false
+  96e11bd0-7756-4cc3-928c-aa4bb8bbe61a:
+    uuid: 96e11bd0-7756-4cc3-928c-aa4bb8bbe61a
+    id: image_effects_gaussian_blur
+    weight: null
+    data:
+      radius: 3
+      sigma: null
+  3efaa0dd-4b07-465e-919f-678a3cd0c60b:
+    uuid: 3efaa0dd-4b07-465e-919f-678a3cd0c60b
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

@@ -1,0 +1,21 @@
+uuid: 39bb889e-076c-4859-aa82-bb86dd17a63c
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_300
+label: 'Landscape (300x225)'
+effects:
+  a5f0e9c6-cd92-434b-a635-54b6806352bd:
+    uuid: a5f0e9c6-cd92-434b-a635-54b6806352bd
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 300
+      height: 225
+      anchor: center-center
+  da7eaf3f-6e5d-49ad-86d2-535c803dde60:
+    uuid: da7eaf3f-6e5d-49ad-86d2-535c803dde60
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

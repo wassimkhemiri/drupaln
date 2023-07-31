@@ -1,0 +1,9 @@
+core:
+  css:
+    theme:
+      css/image-sizes.css: {}
+  js:
+    js/image-sizes.es.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.debounce

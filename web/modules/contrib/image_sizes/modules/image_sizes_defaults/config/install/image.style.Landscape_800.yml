@@ -1,0 +1,21 @@
+uuid: cc926d50-eb5d-4039-8d04-36b96b6220c8
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_800
+label: 'Landscape (800x600)'
+effects:
+  a2dbc153-a81f-4c31-99f9-aa9600f14f35:
+    uuid: a2dbc153-a81f-4c31-99f9-aa9600f14f35
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 800
+      height: 600
+      anchor: center-center
+  bb509ee9-c8a6-400d-9c93-f855a1bd86d9:
+    uuid: bb509ee9-c8a6-400d-9c93-f855a1bd86d9
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

@@ -1,0 +1,21 @@
+uuid: 423acd52-8310-4279-ba48-470cd3947e56
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_400
+label: 'Portrait (399x532)'
+effects:
+  a4a18538-27e2-4347-95a4-0288303456de:
+    uuid: a4a18538-27e2-4347-95a4-0288303456de
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 399
+      height: 532
+      anchor: center-center
+  98bdcd19-7148-4dc1-99aa-90da6edb9d9f:
+    uuid: 98bdcd19-7148-4dc1-99aa-90da6edb9d9f
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

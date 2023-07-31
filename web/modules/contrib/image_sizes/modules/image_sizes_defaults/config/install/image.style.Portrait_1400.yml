@@ -1,0 +1,21 @@
+uuid: 628bf2b2-d684-4a7c-bc0a-f098cab07866
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_1400
+label: 'Portrait (1398x1864)'
+effects:
+  9602c996-2d46-4dea-a841-d32b39e08bbb:
+    uuid: 9602c996-2d46-4dea-a841-d32b39e08bbb
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1398
+      height: 1864
+      anchor: center-center
+  b86a1690-d9d0-4878-ac87-c4de0b69d62e:
+    uuid: b86a1690-d9d0-4878-ac87-c4de0b69d62e
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

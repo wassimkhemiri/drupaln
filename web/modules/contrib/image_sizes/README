@@ -1,0 +1,84 @@
+CONTENTS OF THIS FILE
+---------------------
+
+ * Introduction
+ * Requirements
+ * Installation
+ * Configuration
+ * Maintainers
+
+
+INTRODUCTION
+------------
+
+Responsive image styles depend on the parent element width.
+
+Features:
+ * Add a new image effect "insert_style"
+ * Add new image field formatter
+ * Add custom presets for choose on website
+
+ * For a full description of the module, visit the project page:
+   https://www.drupal.org/project/image_sizes
+
+ * To submit bug reports and feature suggestions, or to track changes:
+   https://www.drupal.org/project/issues/image_sizes
+
+
+REQUIREMENTS
+------------
+
+This module requires the following outside of Drupal core:
+
+ * oomphinc/composer-installers-extender
+
+
+INSTALLATION
+------------
+
+ * Install the Image Sizes module as you would normally install a
+   contributed Drupal module. Visit
+   https://www.drupal.org/node/1897420 for further information.
+
+To install all assets, please add "https://asset-packagist.org" to your composer file.
+
+```
+  "repositories": {
+    "drupal": {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+      },
+    "assets": {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  },
+  ```
+Or
+
+`composer config repositories.assets-packagist composer https://asset-packagist.org`
+
+Add oomphinc/composer-installers-extender
+
+`composer require oomphinc/composer-installers-extender:^1.1`
+
+And set installer types and paths:
+
+```
+"extras": {
+    "installer-types": ["bower-asset", "npm-asset"],
+     "installer-paths": {
+         "docroot/libraries/{$name}": ["type:bower-asset", "type:npm-asset"]
+     }
+}
+```
+
+
+MAINTAINERS
+-----------
+
+ * Erik Seifert - https://www.drupal.org/u/erik-seifert
+
+Supporting organizations:
+
+ * b-connect GmbH - https://www.drupal.org/b-connect-gmbh

@@ -1,0 +1,7 @@
+
+# Image sizes preset entity menu items definition
+entity.image_sizes_preset_entity.collection:
+  title: 'Image sizes presets'
+  route_name: entity.image_sizes_preset_entity.collection
+  description: 'List Image sizes preset entity'
+  parent: system.admin_config_media

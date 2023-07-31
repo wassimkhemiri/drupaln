@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Implements all hooks needed for image sizes module.
+ */
+
+use Drupal\Component\Utility\NestedArray;
+
+/**
+ * Implements hook_theme().
+ */
+function image_sizes_theme() {
+  return [
+    'image_sizes_insert_summary' => [
+      'variables' => ['data' => NULL, 'effect' => []],
+    ],
+    'image_sizes' => [
+      'variables' => [
+        'entity' => NULL,
+        'style' => NULL,
+        'inline' => FALSE,
+        'attributes' => NULL,
+      ],
+    ],
+  ];
+}
+
+
+function template_preprocess_image_sizes(&$variables) {
+  /**
+   * @var \Drupal\image_sizes\ImageSizesService
+   */
+  $service = \Drupal::service('image_sizes');
+  $attributes = $service->getAttributes($variables['style'], $variables['entity'], true);
+  if (!is_array($variables['attributes'])) {
+    $variables['attributes'] = [];
+  }
+  $variables['attributes'] = NestedArray::mergeDeep($variables['attributes'], $attributes->toArray());
+  $variables['#attached']['library'] = [
+    'image_sizes/core'
+  ];
+}

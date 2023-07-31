@@ -1,0 +1,23 @@
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'clearfix post-block',
+  ]
+%}
+
+  <div{{ attributes.addClass(classes) }}>
+    <div class="post-inner">
+      <div class="post-thumbnail">
+        {{ content.field_image }}
+      </div>
+      <div class="post-meta-wrap">
+        <div class="post-meta">{{ content.field_post_category }}<span class="post-created"> {{ date }}</span> </div>
+        <h3 class="post-title"><a href="{{url}}">{{ label }}</a></h3>
+      </div>
+    </div>
+  </div>

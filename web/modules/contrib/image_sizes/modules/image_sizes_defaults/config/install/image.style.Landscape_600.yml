@@ -1,0 +1,21 @@
+uuid: a0590816-1f0c-4132-9559-7cbd8e5eeb8d
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_600
+label: 'Landscape (600x450)'
+effects:
+  cf88a2b0-e54b-453d-bb6e-6e1fb795a6f1:
+    uuid: cf88a2b0-e54b-453d-bb6e-6e1fb795a6f1
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 600
+      height: 450
+      anchor: center-center
+  d30ac623-b548-467e-bb2d-3fd1e2605280:
+    uuid: d30ac623-b548-467e-bb2d-3fd1e2605280
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

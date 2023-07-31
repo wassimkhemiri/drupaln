@@ -1,0 +1,39 @@
+uuid: 0139ffd2-13fe-4b2c-9cf1-2562d5813d4f
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.Default_100
+    - image.style.Default_1000
+    - image.style.Default_1100
+    - image.style.Default_1200
+    - image.style.Default_1300
+    - image.style.Default_1400
+    - image.style.Default_200
+    - image.style.Default_300
+    - image.style.Default_400
+    - image.style.Default_500
+    - image.style.Default_600
+    - image.style.Default_700
+    - image.style.Default_800
+    - image.style.Default_900
+    - image.style.Default_preload
+id: default
+label: Default
+preload: Default_preload
+styles:
+  Default_1400: Default_1400
+  Default_1300: Default_1300
+  Default_1200: Default_1200
+  Default_1100: Default_1100
+  Default_1000: Default_1000
+  Default_900: Default_900
+  Default_800: Default_800
+  Default_700: Default_700
+  Default_600: Default_600
+  Default_500: Default_500
+  Default_400: Default_400
+  Default_300: Default_300
+  Default_200: Default_200
+  Default_100: Default_100
+fallback: original

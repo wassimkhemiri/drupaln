@@ -1,0 +1,21 @@
+uuid: dfdf92cd-7b64-4283-a852-a895c5530bef
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_1400
+label: 'Landscape (1400x1050)'
+effects:
+  7f1fc615-8e7b-4813-8bdb-f14a77cb780d:
+    uuid: 7f1fc615-8e7b-4813-8bdb-f14a77cb780d
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1400
+      height: 1050
+      anchor: center-center
+  9668bbf8-75df-4f29-aba3-fbddb77b07b4:
+    uuid: 9668bbf8-75df-4f29-aba3-fbddb77b07b4
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

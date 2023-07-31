@@ -1,0 +1,21 @@
+uuid: a4f3e3fa-4f85-4eb6-ad55-562e1c9c13d4
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_1200
+label: 'Portrait (1200x1600)'
+effects:
+  d2b0bfdf-530d-4077-b0ad-9a4e041a730f:
+    uuid: d2b0bfdf-530d-4077-b0ad-9a4e041a730f
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1200
+      height: 1600
+      anchor: center-center
+  633c3ae4-6ea5-40a6-b825-73e7b56e0ee0:
+    uuid: 633c3ae4-6ea5-40a6-b825-73e7b56e0ee0
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

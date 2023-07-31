@@ -1,0 +1,19 @@
+{
+  "name": "drupal/dempo",
+  "description": "Dempo is responsive mobile optimized, based on Bootstrap. Inspired by WordPress Katerio.",
+  "type": "drupal-theme",
+  "license": "GPL-2.0+",
+  "homepage": "http://drupal.org/project/dempo",
+  "authors": [
+    {
+      "name": "Wendy William (drupalnesia)",
+      "homepage": "https://www.drupal.org/u/drupalnesia",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/dempo",
+    "source": "http://cgit.drupalcode.org/dempo"
+  },
+  "minimum-stability": "dev"
+}

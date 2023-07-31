@@ -1,0 +1,21 @@
+uuid: f1f8f77d-81f9-46a6-8e1d-e85dd14f9682
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_1200
+label: 'Landscape (1200x900)'
+effects:
+  6efcacfe-80bd-4316-ad01-f56bf2cf79c7:
+    uuid: 6efcacfe-80bd-4316-ad01-f56bf2cf79c7
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1200
+      height: 900
+      anchor: center-center
+  3411436a-4ab1-4d6c-be09-796723c03419:
+    uuid: 3411436a-4ab1-4d6c-be09-796723c03419
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

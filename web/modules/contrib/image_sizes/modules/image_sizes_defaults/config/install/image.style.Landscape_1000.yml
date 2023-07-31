@@ -1,0 +1,21 @@
+uuid: b456d859-b935-41c0-aa24-9297de7439a1
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_1000
+label: 'Landscape (1000x750)'
+effects:
+  6b3f7dd7-b092-4df2-8aae-718d1dfa1463:
+    uuid: 6b3f7dd7-b092-4df2-8aae-718d1dfa1463
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1000
+      height: 750
+      anchor: center-center
+  d94096bd-b624-4013-90fe-38d409cd2e26:
+    uuid: d94096bd-b624-4013-90fe-38d409cd2e26
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

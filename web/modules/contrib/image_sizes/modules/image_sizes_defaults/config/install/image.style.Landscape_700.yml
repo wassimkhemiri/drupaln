@@ -1,0 +1,21 @@
+uuid: b5cb64ef-d28d-4e8d-8fa8-eeacf11b248b
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_700
+label: 'Landscape (700x525)'
+effects:
+  e59fc1db-0e58-4c80-9ae1-2097c2c4e326:
+    uuid: e59fc1db-0e58-4c80-9ae1-2097c2c4e326
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 700
+      height: 525
+      anchor: center-center
+  854e185d-c1fb-4827-a458-dab68b0d36b3:
+    uuid: 854e185d-c1fb-4827-a458-dab68b0d36b3
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

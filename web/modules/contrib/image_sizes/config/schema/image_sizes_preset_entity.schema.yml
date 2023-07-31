@@ -1,0 +1,25 @@
+image_sizes.image_sizes_preset_entity.*:
+  type: config_entity
+  label: 'Image sizes preset entity config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string
+    preload:
+      type: string
+      label: 'Preload style'
+    styles:
+      label: 'Styles'
+      type: sequence
+      nullable: true
+      sequence:
+        type: string
+        label: 'Styles'
+    fallback:
+      type: string
+      label: 'Fallback style'

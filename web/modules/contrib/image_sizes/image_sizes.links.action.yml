@@ -1,0 +1,5 @@
+entity.image_sizes_preset_entity.add_form:
+  route_name: entity.image_sizes_preset_entity.add_form
+  title: 'Add Image sizes preset entity'
+  appears_on:
+    - entity.image_sizes_preset_entity.collection

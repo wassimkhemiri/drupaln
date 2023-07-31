@@ -1,0 +1,11 @@
+services:
+  image_sizes.image_sizes_generate:
+    class: Drupal\image_sizes\Commands\GenerateImageSizeCommand
+    arguments: ["@entity_type.manager", "@module_handler"]
+    tags:
+      - { name: drush.command }
+  image_sizes.add_format:
+    class: Drupal\image_sizes\Commands\AddFormatCommand
+    arguments: ["@entity_type.manager"]
+    tags:
+      - { name: drush.command }

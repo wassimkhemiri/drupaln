@@ -1,0 +1,4 @@
+services:
+  image_styles_drush.image:
+    class: \Drupal\image_styles_drush\Service\ImageService
+    arguments: ['@plugin.manager.image.effect']

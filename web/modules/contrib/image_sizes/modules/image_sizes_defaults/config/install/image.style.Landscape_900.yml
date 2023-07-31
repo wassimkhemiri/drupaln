@@ -1,0 +1,21 @@
+uuid: 26b10ca5-5fbd-4785-a505-99553ab65140
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_900
+label: 'Landscape (900x675)'
+effects:
+  cea33520-af8e-492b-9d72-e468865c2c17:
+    uuid: cea33520-af8e-492b-9d72-e468865c2c17
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 900
+      height: 675
+      anchor: center-center
+  b8adc76c-8cd0-4acb-a7da-ae563397e0db:
+    uuid: b8adc76c-8cd0-4acb-a7da-ae563397e0db
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

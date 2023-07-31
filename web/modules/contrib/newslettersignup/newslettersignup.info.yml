@@ -1,0 +1,12 @@
+name: Newsletter Signup
+type: module
+description: 'A simple newsletter signup form'
+package: Newsletter
+core: 8.x
+core_version_requirement: ^8 || ^9 || ^10
+configure: newslettersignup.admin_settings_form
+
+# Information added by Drupal.org packaging script on 2022-10-14
+version: '8.x-3.2'
+project: 'newslettersignup'
+datestamp: 1665740202

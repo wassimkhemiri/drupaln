@@ -1,0 +1,21 @@
+uuid: 430effbc-fe10-474c-aeec-3edbfbbd4bdb
+langcode: en
+status: true
+dependencies: {  }
+name: Landscape_1100
+label: 'Landscape (1100x825)'
+effects:
+  ffeb8fd5-968e-4c96-99b6-586772a36513:
+    uuid: ffeb8fd5-968e-4c96-99b6-586772a36513
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 1100
+      height: 825
+      anchor: center-center
+  188add96-c5de-4928-be43-bfd3a7818c51:
+    uuid: 188add96-c5de-4928-be43-bfd3a7818c51
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

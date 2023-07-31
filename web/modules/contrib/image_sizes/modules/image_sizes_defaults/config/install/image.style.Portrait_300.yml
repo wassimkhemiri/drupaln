@@ -1,0 +1,21 @@
+uuid: 6637c4fe-ddf4-4f91-8d08-a8a901b77609
+langcode: en
+status: true
+dependencies: {  }
+name: Portrait_300
+label: 'Portrait (300x400)'
+effects:
+  43df2b1b-7ff2-4f04-af8c-28aa8dfea226:
+    uuid: 43df2b1b-7ff2-4f04-af8c-28aa8dfea226
+    id: image_scale_and_crop
+    weight: null
+    data:
+      width: 300
+      height: 400
+      anchor: center-center
+  b15c8323-e4c7-4392-81c5-5c7d2b125dc2:
+    uuid: b15c8323-e4c7-4392-81c5-5c7d2b125dc2
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

@@ -1,0 +1,11 @@
+{
+    "name": "org/image_styles_drush",
+    "type": "drupal-drush",
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^11"
+            }
+        }
+    }
+}

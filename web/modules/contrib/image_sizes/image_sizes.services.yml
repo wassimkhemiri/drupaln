@@ -1,0 +1,4 @@
+services:
+  image_sizes:
+    class: Drupal\image_sizes\ImageSizesService
+    arguments: ['@file_system', '@image.factory', '@entity_type.manager']

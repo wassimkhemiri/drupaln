@@ -1,0 +1,21 @@
+uuid: 28ac7007-36df-4e4b-8569-cac91fae2beb
+langcode: en
+status: true
+dependencies: {  }
+name: Default_900
+label: 'Default 900'
+effects:
+  e6d69a90-8637-4ce4-bffc-1b772041a4bb:
+    uuid: e6d69a90-8637-4ce4-bffc-1b772041a4bb
+    id: image_scale
+    weight: null
+    data:
+      width: 900
+      height: null
+      upscale: false
+  4563e6d6-b076-405d-8970-deb313f10ba8:
+    uuid: 4563e6d6-b076-405d-8970-deb313f10ba8
+    id: image_convert
+    weight: null
+    data:
+      extension: webp

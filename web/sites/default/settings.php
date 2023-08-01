@@ -689,6 +689,11 @@ $settings['update_free_access'] = FALSE;
  */
 # $config['system.site']['name'] = 'My Drupal site';
 # $config['user.settings']['anonymous'] = 'Visitor';
+$config['system.logging']['error_level'] = 'verbose';
+
+
+
+
 
 /**
  * Load services definition file.
@@ -873,3 +878,5 @@ $databases['default']['default'] = array (
   'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
 );
 $settings['config_sync_directory'] = 'sites/default/files/config_OEifsSQZSTljE6Y1ryZtFTBjmXLwuKTor7Nkg-lx4wQj5e5rFJ4uDovQz4cBNzFgSjB8bsAhLQ/sync';
+
+

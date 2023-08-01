@@ -1,0 +1,13 @@
+diff --git a/core/modules/views/src/Plugin/views/filter/Date.php b/core/modules/views/src/Plugin/views/filter/Date.php
+index 9aa8168f08..b2b76418d6 100644
+--- a/core/modules/views/src/Plugin/views/filter/Date.php
++++ b/core/modules/views/src/Plugin/views/filter/Date.php
+@@ -124,7 +124,7 @@ public function acceptExposedInput($input) {
+     // Store this because it will get overwritten.
+     $type = NULL;
+     if ($this->isAGroup()) {
+-      if (is_array($this->group_info)) {
++      if (!empty($this->group_info['type'])) {
+         $type = $this->group_info['type'];
+       }
+     }

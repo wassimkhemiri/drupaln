@@ -11,8 +11,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\Entity\BaseFieldOverride;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
+<<<<<<< HEAD
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
+=======
+>>>>>>> origin/main
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -60,7 +63,10 @@ class FieldBaseOverrideCreateCommands extends DrushCommands
     #[CLI\Usage(name: 'field:base-field-override-create', description: 'Create a base field override by answering the prompts.')]
     #[CLI\Usage(name: 'field:base-field-override-create taxonomy_term tag', description: 'Create a base field override and fill in the remaining information through prompts.')]
     #[CLI\Usage(name: 'field:base-field-override-create taxonomy_term tag --field-name=name --field-label=Label --is-required=1', description: 'Create a base field override in a completely non-interactive way.')]
+<<<<<<< HEAD
     #[CLI\Complete(method_name_or_callable: 'complete')]
+=======
+>>>>>>> origin/main
     #[CLI\Version(version: '11.0')]
     public function baseOverrideCreateField(?string $entityType = null, ?string $bundle = null, array $options = [
         'field-name' => InputOption::VALUE_REQUIRED,
@@ -121,6 +127,7 @@ class FieldBaseOverrideCreateCommands extends DrushCommands
         $this->logResult($baseFieldOverride);
     }
 
+<<<<<<< HEAD
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
         if ($input->getCompletionType() === CompletionInput::TYPE_ARGUMENT_VALUE) {
@@ -145,6 +152,8 @@ class FieldBaseOverrideCreateCommands extends DrushCommands
         }
     }
 
+=======
+>>>>>>> origin/main
     protected function askFieldName(string $entityType): ?string
     {
         /** @var BaseFieldDefinition[] $definitions */

@@ -287,8 +287,12 @@ class Environment
     public function docsPath(): ?string
     {
         if (!$this->docPrefix) {
+<<<<<<< HEAD
             $foundPath = $this->findDocsPath($this->drushBasePath);
             $this->docPrefix = $foundPath ?: null;
+=======
+            $this->docPrefix = $this->findDocsPath($this->drushBasePath);
+>>>>>>> origin/main
         }
         return $this->docPrefix;
     }

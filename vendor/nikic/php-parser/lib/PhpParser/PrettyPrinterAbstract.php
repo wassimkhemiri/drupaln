@@ -21,8 +21,11 @@ abstract class PrettyPrinterAbstract
     const FIXUP_BRACED_NAME     = 4; // Name operand that may require bracing
     const FIXUP_VAR_BRACED_NAME = 5; // Name operand that may require ${} bracing
     const FIXUP_ENCAPSED        = 6; // Encapsed string part
+<<<<<<< HEAD
     const FIXUP_NEW             = 7; // New/instanceof operand
     const FIXUP_STATIC_DEREF_LHS = 8; // LHS of static dereferencing operation
+=======
+>>>>>>> origin/main
 
     protected $precedenceMap = [
         // [precedence, associativity]
@@ -979,6 +982,7 @@ abstract class PrettyPrinterAbstract
                     return '(' . $this->p($subNode) . ')';
                 }
                 break;
+<<<<<<< HEAD
             case self::FIXUP_STATIC_DEREF_LHS:
                 if ($this->staticDereferenceLhsRequiresParens($subNode)
                     && !$this->origTokens->haveParens($subStartPos, $subEndPos)
@@ -992,6 +996,8 @@ abstract class PrettyPrinterAbstract
                     return '(' . $this->p($subNode) . ')';
                 }
                 break;
+=======
+>>>>>>> origin/main
             case self::FIXUP_BRACED_NAME:
             case self::FIXUP_VAR_BRACED_NAME:
                 if ($subNode instanceof Expr
@@ -1062,13 +1068,18 @@ abstract class PrettyPrinterAbstract
     }
 
     /**
+<<<<<<< HEAD
      * Determines whether the LHS of an array/object operation must be wrapped in parentheses.
+=======
+     * Determines whether the LHS of a dereferencing operation must be wrapped in parenthesis.
+>>>>>>> origin/main
      *
      * @param Node $node LHS of dereferencing operation
      *
      * @return bool Whether parentheses are required
      */
     protected function dereferenceLhsRequiresParens(Node $node) : bool {
+<<<<<<< HEAD
         // A constant can occur on the LHS of an array/object deref, but not a static deref.
         return $this->staticDereferenceLhsRequiresParens($node)
             && !$node instanceof Expr\ConstFetch;
@@ -1082,6 +1093,8 @@ abstract class PrettyPrinterAbstract
      * @return bool Whether parentheses are required
      */
     protected function staticDereferenceLhsRequiresParens(Node $node): bool {
+=======
+>>>>>>> origin/main
         return !($node instanceof Expr\Variable
             || $node instanceof Node\Name
             || $node instanceof Expr\ArrayDimFetch
@@ -1094,10 +1107,15 @@ abstract class PrettyPrinterAbstract
             || $node instanceof Expr\StaticCall
             || $node instanceof Expr\Array_
             || $node instanceof Scalar\String_
+<<<<<<< HEAD
+=======
+            || $node instanceof Expr\ConstFetch
+>>>>>>> origin/main
             || $node instanceof Expr\ClassConstFetch);
     }
 
     /**
+<<<<<<< HEAD
      * Determines whether an expression used in "new" or "instanceof" requires parentheses.
      *
      * @param Node $node New or instanceof operand
@@ -1120,6 +1138,8 @@ abstract class PrettyPrinterAbstract
     }
 
     /**
+=======
+>>>>>>> origin/main
      * Print modifiers, including trailing whitespace.
      *
      * @param int $modifiers Modifier mask to print
@@ -1220,7 +1240,11 @@ abstract class PrettyPrinterAbstract
             Expr\PostDec::class => ['var' => self::FIXUP_PREC_LEFT],
             Expr\Instanceof_::class => [
                 'expr' => self::FIXUP_PREC_LEFT,
+<<<<<<< HEAD
                 'class' => self::FIXUP_NEW,
+=======
+                'class' => self::FIXUP_PREC_RIGHT, // TODO: FIXUP_NEW_VARIABLE
+>>>>>>> origin/main
             ],
             Expr\Ternary::class => [
                 'cond' => self::FIXUP_PREC_LEFT,
@@ -1228,6 +1252,7 @@ abstract class PrettyPrinterAbstract
             ],
 
             Expr\FuncCall::class => ['name' => self::FIXUP_CALL_LHS],
+<<<<<<< HEAD
             Expr\StaticCall::class => ['class' => self::FIXUP_STATIC_DEREF_LHS],
             Expr\ArrayDimFetch::class => ['var' => self::FIXUP_DEREF_LHS],
             Expr\ClassConstFetch::class => [
@@ -1235,6 +1260,12 @@ abstract class PrettyPrinterAbstract
                 'name' => self::FIXUP_BRACED_NAME,
             ],
             Expr\New_::class => ['class' => self::FIXUP_NEW],
+=======
+            Expr\StaticCall::class => ['class' => self::FIXUP_DEREF_LHS],
+            Expr\ArrayDimFetch::class => ['var' => self::FIXUP_DEREF_LHS],
+            Expr\ClassConstFetch::class => ['var' => self::FIXUP_DEREF_LHS],
+            Expr\New_::class => ['class' => self::FIXUP_DEREF_LHS], // TODO: FIXUP_NEW_VARIABLE
+>>>>>>> origin/main
             Expr\MethodCall::class => [
                 'var' => self::FIXUP_DEREF_LHS,
                 'name' => self::FIXUP_BRACED_NAME,
@@ -1244,7 +1275,11 @@ abstract class PrettyPrinterAbstract
                 'name' => self::FIXUP_BRACED_NAME,
             ],
             Expr\StaticPropertyFetch::class => [
+<<<<<<< HEAD
                 'class' => self::FIXUP_STATIC_DEREF_LHS,
+=======
+                'class' => self::FIXUP_DEREF_LHS,
+>>>>>>> origin/main
                 'name' => self::FIXUP_VAR_BRACED_NAME,
             ],
             Expr\PropertyFetch::class => [
@@ -1330,7 +1365,10 @@ abstract class PrettyPrinterAbstract
             'Param->default' => $stripEquals,
             'Stmt_Break->num' => $stripBoth,
             'Stmt_Catch->var' => $stripLeft,
+<<<<<<< HEAD
             'Stmt_ClassConst->type' => $stripRight,
+=======
+>>>>>>> origin/main
             'Stmt_ClassMethod->returnType' => $stripColon,
             'Stmt_Class->extends' => ['left' => \T_EXTENDS],
             'Stmt_Enum->scalarType' => $stripColon,
@@ -1372,7 +1410,10 @@ abstract class PrettyPrinterAbstract
             'Stmt_Break->num' => [\T_BREAK, false, ' ', null],
             'Stmt_Catch->var' => [null, false, ' ', null],
             'Stmt_ClassMethod->returnType' => [')', false, ' : ', null],
+<<<<<<< HEAD
             'Stmt_ClassConst->type' => [\T_CONST, false, ' ', null],
+=======
+>>>>>>> origin/main
             'Stmt_Class->extends' => [null, false, ' extends ', null],
             'Stmt_Enum->scalarType' => [null, false, ' : ', null],
             'Stmt_EnumCase->expr' => [null, false, ' = ', null],
@@ -1562,7 +1603,10 @@ abstract class PrettyPrinterAbstract
             'Stmt_ClassMethod->flags' => \T_FUNCTION,
             'Stmt_Class->flags' => \T_CLASS,
             'Stmt_Property->flags' => \T_VARIABLE,
+<<<<<<< HEAD
             'Expr_PrintableNewAnonClass->flags' => \T_CLASS,
+=======
+>>>>>>> origin/main
             'Param->flags' => \T_VARIABLE,
             //'Stmt_TraitUseAdaptation_Alias->newModifier' => 0, // TODO
         ];

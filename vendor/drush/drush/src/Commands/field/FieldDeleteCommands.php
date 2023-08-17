@@ -10,8 +10,11 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldConfigInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
+<<<<<<< HEAD
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
+=======
+>>>>>>> origin/main
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -56,7 +59,10 @@ class FieldDeleteCommands extends DrushCommands
     #[CLI\Usage(name: 'field-delete taxonomy_term tag', description: 'Delete a field and fill in the remaining information through prompts.')]
     #[CLI\Usage(name: 'field-delete taxonomy_term tag --field-name=field_tag_label', description: 'Delete a field in a non-interactive way.')]
     #[CLI\Usage(name: 'field-delete taxonomy_term --field-name=field_tag_label --all-bundles', description: 'Delete a field from all bundles.')]
+<<<<<<< HEAD
     #[CLI\Complete(method_name_or_callable: 'complete')]
+=======
+>>>>>>> origin/main
     #[CLI\Version(version: '11.0')]
     public function delete(?string $entityType = null, ?string $bundle = null, array $options = [
         'field-name' => InputOption::VALUE_REQUIRED,
@@ -128,6 +134,7 @@ class FieldDeleteCommands extends DrushCommands
         field_purge_batch(10);
     }
 
+<<<<<<< HEAD
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
         if ($input->getCompletionType() === CompletionInput::TYPE_ARGUMENT_VALUE) {
@@ -165,6 +172,44 @@ class FieldDeleteCommands extends DrushCommands
         $fieldConfigs = $this->getFieldConfigs($entityType, $bundle);
         $choices = [];
 
+=======
+    protected function askExisting(string $entityType, ?string $bundle): ?string
+    {
+        /** @var FieldConfigInterface[] $fieldConfigs */
+        $fieldConfigs = $this->entityTypeManager
+            ->getStorage('field_config')
+            ->loadByProperties([
+                'entity_type' => $entityType,
+            ]);
+
+        if ($fieldConfigs === []) {
+            throw new \InvalidArgumentException(
+                dt("Entity type '!entityType' has no fields.", [
+                    '!entityType' => $entityType,
+                ])
+            );
+        }
+
+        if ($bundle !== null) {
+            /** @var FieldConfigInterface[] $fieldConfigs */
+            $fieldConfigs = $this->entityTypeManager
+                ->getStorage('field_config')
+                ->loadByProperties([
+                    'entity_type' => $entityType,
+                    'bundle' => $bundle,
+                ]);
+
+            if ($fieldConfigs === []) {
+                throw new \InvalidArgumentException(
+                    dt("Bundle '!bundle' has no fields.", [
+                        '!bundle' => $bundle,
+                    ])
+                );
+            }
+        }
+
+        $choices = [];
+>>>>>>> origin/main
         foreach ($fieldConfigs as $fieldConfig) {
             $label = $this->input->getOption('show-machine-names')
                 ? $fieldConfig->get('field_name')
@@ -213,6 +258,7 @@ class FieldDeleteCommands extends DrushCommands
         return $answer;
     }
 
+<<<<<<< HEAD
     /**
      * Returns all field configs for the given entity type and bundle.
      *
@@ -256,6 +302,8 @@ class FieldDeleteCommands extends DrushCommands
         return $fieldConfigs;
     }
 
+=======
+>>>>>>> origin/main
     protected function deleteFieldConfig(FieldConfigInterface $fieldConfig): void
     {
         $fieldStorage = $fieldConfig->getFieldStorageDefinition();

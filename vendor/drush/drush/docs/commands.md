@@ -7,8 +7,13 @@
 
 Creating a new Drush command is easy. Follow the steps below.
 
+<<<<<<< HEAD
 1. Run `drush generate drush:command-file`.
 2. Drush will prompt for the machine name of the module that should "own" the file. The module selected must already exist and be enabled. Use `drush generate module` to create a new module.
+=======
+1. Run `drush generate drush-command-file`.
+2. Drush will prompt for the machine name of the module that should "own" the file. The module selected must already exist and be enabled. Use `drush generate module-standard` to create a new module.
+>>>>>>> origin/main
 3. Drush will then report that it created a commandfile. Edit as needed.
 4. Use the classes for the core Drush commands at [/src/Commands](https://github.com/drush-ops/drush/tree/12.x/src/Commands) as inspiration and documentation.
 5. See the [dependency injection docs](dependency-injection.md) for interfaces you can implement to gain access to Drush config, Drupal site aliases, etc. Also note the [create() method](dependency-injection.md#create-method) for injecting Drupal or Drush dependencies.
@@ -148,4 +153,8 @@ With this configuration in place, global commands may be placed as described in 
        1. The file must end in `Commands.php`
         1. The directory above `Commands` must be one of:
             1.  A Folder listed in the 'include' option. Include may be provided via [config](#global-drush-commands) or via CLI.
+<<<<<<< HEAD
             1.  ../drush, /drush or /sites/all/drush. These paths are relative to Drupal root.
+=======
+            1.  ../drush, /drush or /sites/all/drush. These paths are relative to Drupal root.
+>>>>>>> origin/main

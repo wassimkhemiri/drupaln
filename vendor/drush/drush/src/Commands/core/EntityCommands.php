@@ -21,7 +21,10 @@ final class EntityCommands extends DrushCommands
 
     public function __construct(protected EntityTypeManagerInterface $entityTypeManager)
     {
+<<<<<<< HEAD
         parent::__construct();
+=======
+>>>>>>> origin/main
     }
 
     public static function create(ContainerInterface $container): self

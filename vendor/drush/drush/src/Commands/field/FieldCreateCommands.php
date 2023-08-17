@@ -24,8 +24,11 @@ use Drupal\field\FieldConfigInterface;
 use Drupal\field\FieldStorageConfigInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
+<<<<<<< HEAD
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
+=======
+>>>>>>> origin/main
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -105,7 +108,10 @@ class FieldCreateCommands extends DrushCommands implements CustomEventAwareInter
     #[CLI\Usage(name: self::CREATE, description: 'Create a field by answering the prompts.')]
     #[CLI\Usage(name: 'field-create taxonomy_term tag', description: 'Create a field and fill in the remaining information through prompts.')]
     #[CLI\Usage(name: 'field-create taxonomy_term tag --field-name=field_tag_label --field-label=Label --field-type=string --field-widget=string_textfield --is-required=1 --cardinality=2', description: 'Create a field in a completely non-interactive way.')]
+<<<<<<< HEAD
     #[CLI\Complete(method_name_or_callable: 'complete')]
+=======
+>>>>>>> origin/main
     #[CLI\Version(version: '11.0')]
     public function fieldCreate(?string $entityType = null, ?string $bundle = null, array $options = [
         'field-name' => InputOption::VALUE_REQUIRED,
@@ -202,6 +208,7 @@ class FieldCreateCommands extends DrushCommands implements CustomEventAwareInter
         $this->logResult($field);
     }
 
+<<<<<<< HEAD
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
         if ($input->getCompletionType() === CompletionInput::TYPE_ARGUMENT_VALUE) {
@@ -255,12 +262,18 @@ class FieldCreateCommands extends DrushCommands implements CustomEventAwareInter
         }
     }
 
+=======
+>>>>>>> origin/main
     protected function askExistingFieldName(): ?string
     {
         $entityType = $this->input->getArgument('entityType');
         $bundle = $this->input->getArgument('bundle');
+<<<<<<< HEAD
         $showMachineNames = $this->input->getOption('show-machine-names');
         $choices = $this->getExistingFieldStorageOptions($entityType, $bundle, $showMachineNames);
+=======
+        $choices = $this->getExistingFieldStorageOptions($entityType, $bundle);
+>>>>>>> origin/main
 
         if (empty($choices)) {
             return null;
@@ -566,7 +579,11 @@ class FieldCreateCommands extends DrushCommands implements CustomEventAwareInter
         return isset($fieldStorageDefinitions[$fieldName]);
     }
 
+<<<<<<< HEAD
     protected function getExistingFieldStorageOptions(string $entityType, string $bundle, bool $showMachineNames): array
+=======
+    protected function getExistingFieldStorageOptions(string $entityType, string $bundle): array
+>>>>>>> origin/main
     {
         $fieldTypes = $this->fieldTypePluginManager->getDefinitions();
         $options = [];
@@ -578,7 +595,11 @@ class FieldCreateCommands extends DrushCommands implements CustomEventAwareInter
             // - field storages that should not be added via user interface,
             // - field storages that already have a field in the bundle.
             $fieldType = $fieldStorage->getType();
+<<<<<<< HEAD
             $label = $showMachineNames
+=======
+            $label = $this->input->getOption('show-machine-names')
+>>>>>>> origin/main
                 ? $fieldTypes[$fieldType]['id']
                 : $fieldTypes[$fieldType]['label'];
 

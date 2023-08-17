@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Drush\Commands\core;
 
+<<<<<<< HEAD
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+=======
+use Consolidation\AnnotatedCommand\AnnotatedCommand;
+>>>>>>> origin/main
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
 use Drush\Drush;
@@ -17,13 +21,17 @@ use Drush\Utils\FsUtils;
 use Psy\Configuration;
 use Psy\VersionUpdater\Checker;
 use Drush\Boot\DrupalBootLevels;
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerInterface;
+=======
+>>>>>>> origin/main
 
 final class CliCommands extends DrushCommands
 {
     const DOCS_REPL = 'docs:repl';
     const PHP = 'php:cli';
 
+<<<<<<< HEAD
     public function __construct(
         protected EntityTypeManagerInterface $entityTypeManager
     ) {
@@ -39,6 +47,8 @@ final class CliCommands extends DrushCommands
         return $commandHandler;
     }
 
+=======
+>>>>>>> origin/main
     /**
      * Drush's PHP Shell.
      */
@@ -58,8 +68,11 @@ final class CliCommands extends DrushCommands
     #[CLI\Option(name: 'version-history', description: 'Use command history based on Drupal version. Default is per site.')]
     #[CLI\Option(name: 'cwd', description: 'A directory to change to before launching the shell. Default is the project root directory')]
     #[CLI\Topics(topics: [self::DOCS_REPL])]
+<<<<<<< HEAD
     #[CLI\Usage(name: '$node = Node::load(1)', description: 'Entity classes are available without their namespace. For example, Node::load(1) works instead of Drupal\Node\entity\Node::load(1).')]
     #[CLI\Usage(name: '$paragraph = Paragraph::loadRevision(1)', description: 'Also, a loadRevision static method is made available for easier load of revisions.')]
+=======
+>>>>>>> origin/main
     #[CLI\Bootstrap(level: DrupalBootLevels::FULL)]
     public function cli(array $options = ['version-history' => false, 'cwd' => self::REQ]): void
     {
@@ -87,6 +100,7 @@ final class CliCommands extends DrushCommands
         Handle::register();
         $shell->setScopeVariables(['container' => \Drupal::getContainer()]);
 
+<<<<<<< HEAD
         // Add our casters to the shell configuration.
         $configuration->addCasters($this->getCasters());
 
@@ -96,6 +110,15 @@ final class CliCommands extends DrushCommands
 
         $this->makeEntitiesAvailableWithShortClassNames();
 
+=======
+        // Add Drupal 8 specific casters to the shell configuration.
+        $configuration->addCasters($this->getCasters());
+
+        // Add Drush commands to the shell.
+        $shell->addCommands([new DrushHelpCommand()]);
+        $shell->addCommands($this->getDrushCommands());
+
+>>>>>>> origin/main
         // PsySH will never return control to us, but our shutdown handler will still
         // run after the user presses ^D.  Mark this command as completed to avoid a
         // spurious error message.
@@ -303,6 +326,7 @@ final class CliCommands extends DrushCommands
         'xor',
         ];
     }
+<<<<<<< HEAD
 
     public function makeEntitiesAvailableWithShortClassNames(): void
     {
@@ -320,4 +344,6 @@ final class CliCommands extends DrushCommands
             }', end($parts), $class));
         }
     }
+=======
+>>>>>>> origin/main
 }

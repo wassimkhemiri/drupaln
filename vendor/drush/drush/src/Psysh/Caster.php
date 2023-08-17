@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Drush\Psysh;
 
+<<<<<<< HEAD
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\dynamic_entity_reference\Plugin\Field\FieldType\DynamicEntityReferenceFieldItemList;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
+=======
+>>>>>>> origin/main
 use Symfony\Component\VarDumper\Caster\Caster as BaseCaster;
 
 /**
@@ -20,6 +23,7 @@ class Caster
     /**
      * Casts \Drupal\Core\Entity\ContentEntityInterface classes.
      */
+<<<<<<< HEAD
     public static function castContentEntity(ContentEntityInterface $entity, $array, $stub, $isNested)
     {
         if (!$isNested) {
@@ -46,6 +50,13 @@ class Caster
                     $value = implode(', ', array_column($value, array_keys($value[0])[0]));
                 }
                 $array[$key] = $value;
+=======
+    public static function castContentEntity($entity, $array, $stub, $isNested)
+    {
+        if (!$isNested) {
+            foreach ($entity as $property => $item) {
+                $array[BaseCaster::PREFIX_PROTECTED . $property] = $item;
+>>>>>>> origin/main
             }
         }
 
@@ -134,6 +145,7 @@ class Caster
 
         return $array;
     }
+<<<<<<< HEAD
 
     protected static function handleReferences(array $value, EntityReferenceFieldItemListInterface $fieldItemList, FieldStorageDefinitionInterface $fieldStorageDefinition): array
     {
@@ -158,4 +170,6 @@ class Caster
         $parts = explode('\\', $class);
         return end($parts);
     }
+=======
+>>>>>>> origin/main
 }

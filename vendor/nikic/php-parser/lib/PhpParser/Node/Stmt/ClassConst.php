@@ -10,36 +10,59 @@ class ClassConst extends Node\Stmt
     public $flags;
     /** @var Node\Const_[] Constant declarations */
     public $consts;
+<<<<<<< HEAD
     /** @var Node\AttributeGroup[] PHP attribute groups */
     public $attrGroups;
     /** @var Node\Identifier|Node\Name|Node\ComplexType|null Type declaration */
     public $type;
+=======
+    /** @var Node\AttributeGroup[] */
+    public $attrGroups;
+>>>>>>> origin/main
 
     /**
      * Constructs a class const list node.
      *
+<<<<<<< HEAD
      * @param Node\Const_[]                                          $consts     Constant declarations
      * @param int                                                    $flags      Modifiers
      * @param array                                                  $attributes Additional attributes
      * @param Node\AttributeGroup[]                                  $attrGroups PHP attribute groups
      * @param null|string|Node\Identifier|Node\Name|Node\ComplexType $type       Type declaration
+=======
+     * @param Node\Const_[]         $consts     Constant declarations
+     * @param int                   $flags      Modifiers
+     * @param array                 $attributes Additional attributes
+     * @param Node\AttributeGroup[] $attrGroups PHP attribute groups
+>>>>>>> origin/main
      */
     public function __construct(
         array $consts,
         int $flags = 0,
         array $attributes = [],
+<<<<<<< HEAD
         array $attrGroups = [],
         $type = null
+=======
+        array $attrGroups = []
+>>>>>>> origin/main
     ) {
         $this->attributes = $attributes;
         $this->flags = $flags;
         $this->consts = $consts;
         $this->attrGroups = $attrGroups;
+<<<<<<< HEAD
         $this->type = \is_string($type) ? new Node\Identifier($type) : $type;
     }
 
     public function getSubNodeNames() : array {
         return ['attrGroups', 'flags', 'type', 'consts'];
+=======
+    }
+
+    public function getSubNodeNames() : array {
+        return ['attrGroups', 'flags', 'consts'];
+>>>>>>> origin/main
     }
 
     /**

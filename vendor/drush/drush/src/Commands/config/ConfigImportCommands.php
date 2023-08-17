@@ -260,6 +260,7 @@ class ConfigImportCommands extends DrushCommands
                             if (isset($context['message'])) {
                                 $this->logger()->notice(str_replace('Synchronizing', 'Synchronized', (string)$context['message']));
                             }
+<<<<<<< HEAD
 
                             // Installing and uninstalling modules might trigger
                             // batch operations. Let's process them here.
@@ -267,6 +268,8 @@ class ConfigImportCommands extends DrushCommands
                             if ($step === 'processExtensions' && batch_get()) {
                                 drush_backend_batch_process();
                             }
+=======
+>>>>>>> origin/main
                         } while ($context['finished'] < 1);
                     }
                     // Clear the cache of the active config storage.

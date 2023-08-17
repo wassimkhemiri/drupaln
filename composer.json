@@ -19,8 +19,12 @@
         "cweagans/composer-patches": "^1.7",
         "drupal/adaptivetheme": "5.1",
         "drupal/blazy": "2.16",
+<<<<<<< HEAD
         "drupal/bookable_calendar": "2.2",
         "drupal/comm100_live_chat": "2.x-dev@dev",
+=======
+        "drupal/comm100_live_chat": "2.3",
+>>>>>>> origin/main
         "drupal/core-composer-scaffold": "^10.1",
         "drupal/core-project-message": "^10.1",
         "drupal/core-recommended": "^10.1",
@@ -34,19 +38,31 @@
         "drupal/image_sizes": "3.0",
         "drupal/image_styles_drush": "1.0",
         "drupal/livechat": "3.x-dev",
+<<<<<<< HEAD
+=======
+        "drupal/maillog": "1.1",
+>>>>>>> origin/main
         "drupal/metatag": "2.0",
         "drupal/newslettersignup": "3.2",
         "drupal/ruhi": "10.1",
         "drupal/scroll_top_button": "2.0",
         "drupal/search_api": "1.29",
         "drupal/seo_checklist": "5.2",
+<<<<<<< HEAD
         "drupal/simplenews": "4.x-dev@dev",
+=======
+>>>>>>> origin/main
         "drupal/stickynav": "1.4",
         "drupal/tara": "10.0",
         "drupal/thex": "9.2",
         "drupal/uswds": "2.7",
         "drupal/xara": "10.1",
+<<<<<<< HEAD
         "drupal/xmlsitemap": "1.5",
+=======
+        "drupal/xmlsitemap": "1.4",
+        "drush/drush": "^12.1",
+>>>>>>> origin/main
         "kint-php/kint": "^5.0"
     },
     "conflict": {

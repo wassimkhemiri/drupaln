@@ -9,8 +9,11 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
+<<<<<<< HEAD
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
+=======
+>>>>>>> origin/main
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FieldInfoCommands extends DrushCommands
@@ -66,7 +69,10 @@ class FieldInfoCommands extends DrushCommands
     #[CLI\FilterDefaultField(field: 'field_name')]
     #[CLI\Usage(name: 'field:info taxonomy_term tag', description: 'List all fields.')]
     #[CLI\Usage(name: 'field:info', description: 'List all fields and fill in the remaining information through prompts.')]
+<<<<<<< HEAD
     #[CLI\Complete(method_name_or_callable: 'complete')]
+=======
+>>>>>>> origin/main
     #[CLI\Version(version: '11.0')]
     public function info(?string $entityType = null, ?string $bundle = null, array $options = [
         'format' => 'table',
@@ -87,6 +93,7 @@ class FieldInfoCommands extends DrushCommands
 
         return $this->getRowsOfFieldsByFieldDefinitions($fieldDefinitions);
     }
+<<<<<<< HEAD
 
     public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
     {
@@ -101,4 +108,6 @@ class FieldInfoCommands extends DrushCommands
             $suggestions->suggestValues(array_keys($bundleInfo));
         }
     }
+=======
+>>>>>>> origin/main
 }

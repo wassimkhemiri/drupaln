@@ -66,6 +66,7 @@ if (PHP_VERSION_ID < 80000) {
                 return $operation ? flock($this->handle, $operation) : true;
             }
 
+<<<<<<< HEAD
             public function stream_seek($offset, $whence)
             {
                 if (0 === fseek($this->handle, $offset, $whence)) {
@@ -76,6 +77,8 @@ if (PHP_VERSION_ID < 80000) {
                 return false;
             }
 
+=======
+>>>>>>> origin/main
             public function stream_tell()
             {
                 return $this->position;
@@ -108,6 +111,7 @@ if (PHP_VERSION_ID < 80000) {
         }
     }
 
+<<<<<<< HEAD
     if (
         (function_exists('stream_get_wrappers') && in_array('phpvfscomposer', stream_get_wrappers(), true))
         || (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper'))
@@ -117,3 +121,12 @@ if (PHP_VERSION_ID < 80000) {
 }
 
 return include __DIR__ . '/..'.'/psy/psysh/bin/psysh';
+=======
+    if (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper')) {
+        include("phpvfscomposer://" . __DIR__ . '/..'.'/psy/psysh/bin/psysh');
+        exit(0);
+    }
+}
+
+include __DIR__ . '/..'.'/psy/psysh/bin/psysh';
+>>>>>>> origin/main

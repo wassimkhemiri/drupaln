@@ -118,7 +118,11 @@ final class TwigCommands extends DrushCommands
         foreach ($files as $file) {
             $relative = Path::makeRelative($file->getRealPath(), Drush::bootstrapManager()->getRoot());
             // Loading the template ensures the compiled template is cached.
+<<<<<<< HEAD
             $this->getTwig()->load($relative);
+=======
+            $this->getTwig()->loadTemplate($relative);
+>>>>>>> origin/main
             $this->logger()->success(dt('Compiled twig template !path', ['!path' => $relative]));
         }
     }

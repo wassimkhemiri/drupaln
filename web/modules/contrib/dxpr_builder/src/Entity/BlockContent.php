@@ -2,8 +2,8 @@
 
 namespace Drupal\dxpr_builder\Entity;
 
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\block_content\Entity\BlockContent as BlockContentEntity;
+use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * Description.
@@ -17,7 +17,7 @@ class BlockContent extends BlockContentEntity {
    *
    * {@inheritdoc}
    */
-  public function preSave(EntityStorageInterface $storage) {
+  public function preSave(EntityStorageInterface $storage): void {
     parent::presave($storage);
 
     \Drupal::service('dxpr_builder.service')->setEmptyStringToDxprFieldsOnEntity($this);

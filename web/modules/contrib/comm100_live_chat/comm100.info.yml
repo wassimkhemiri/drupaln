@@ -1,0 +1,6 @@
+name: Comm100 Live Chat
+type: module
+description: Comm100 Live Chat for Drupal
+package: Comm100
+configure: comm100.settings
+core_version_requirement: ^8.8 || ^9 || ^10

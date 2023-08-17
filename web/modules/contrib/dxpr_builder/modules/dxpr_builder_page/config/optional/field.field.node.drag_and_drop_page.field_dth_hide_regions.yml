@@ -16,7 +16,7 @@ bundle: drag_and_drop_page
 label: 'DXPR Hide Regions'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

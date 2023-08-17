@@ -2,12 +2,14 @@
 
 namespace Drupal\dxpr_builder\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface;
 
 /**
  * Provides the license info block.
@@ -39,18 +41,24 @@ class DxprLicenseInfoBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * Block constructor.
    *
-   * @param array $configuration
+   * @param mixed[] $configuration
    *   Block configuration.
    * @param string $plugin_id
    *   Plugin ID.
-   * @param mixed $plugin_definition
+   * @param mixed[] $plugin_definition
    *   Plugin definitions.
    * @param \Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface $license
    *   The DXPR license service.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, DxprBuilderLicenseServiceInterface $license, RequestStack $requestStack) {
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    array $plugin_definition,
+    DxprBuilderLicenseServiceInterface $license,
+    RequestStack $requestStack
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->license = $license;
     $this->requestStack = $requestStack;
@@ -58,8 +66,15 @@ class DxprLicenseInfoBlock extends BlockBase implements ContainerFactoryPluginIn
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<mixed> $configuration
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ) {
     return new static(
       $configuration,
       $plugin_id,
@@ -71,8 +86,25 @@ class DxprLicenseInfoBlock extends BlockBase implements ContainerFactoryPluginIn
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param \Drupal\Core\Session\AccountInterface $account
    */
-  public function build() {
+  protected function blockAccess(AccountInterface $account) {
+    // Check if the user has the 'Edit with DXPR Builder'
+    // or 'Administer site configuration' permission.
+    return AccessResult::allowedIf(
+      $account->hasPermission('Edit with DXPR Builder')
+      || $account->hasPermission('Administer site configuration')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return mixed[]
+   *   Build array with licenses information.
+   */
+  public function build(): array {
     $info = $this->license->getLicenseInfo();
     if ($info) {
       $request = $this->requestStack->getCurrentRequest();
@@ -83,9 +115,12 @@ class DxprLicenseInfoBlock extends BlockBase implements ContainerFactoryPluginIn
           'max-age' => 0,
         ],
         '#theme' => 'dxpr-license-info',
-        '#users_count' => $info['users_count'],
-        '#seats_count' => min(intval($info['users_count']), intval($info['users_limit'])),
-        '#seats_limit' => $info['users_limit'],
+        '#block_label' => $this->t('DXPR User Licensing'),
+        '#total_label' => $this->t('DXPR Builder users'),
+        '#total_count' => $info['users_count'],
+        '#used_label' => $this->t('Licenses used'),
+        '#used_count' => min(intval($info['users_count']), intval($info['users_limit'])),
+        '#limit' => $info['users_limit'],
         // Only show more link when not already on this page.
         '#more_info_link' => $current_path == $more_info_link ? NULL : $more_info_link,
         '#attached' => [

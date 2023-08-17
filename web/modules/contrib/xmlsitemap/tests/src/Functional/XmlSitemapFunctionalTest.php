@@ -33,8 +33,8 @@ class XmlSitemapFunctionalTest extends XmlSitemapTestBase {
     $this->regenerateSitemap();
     $this->drupalGetSitemap();
     $this->assertSession()->statusCodeEquals(200);
-    $etag = $this->getSession()->getResponseHeader('etag');
-    $last_modified = $this->getSession()->getResponseHeader('last-modified');
+    $etag = $this->drupalGetHeader('etag');
+    $last_modified = $this->drupalGetHeader('last-modified');
     $this->assertNotEmpty($etag, t('Etag header found.'));
     $this->assertNotEmpty($last_modified, t('Last-modified header found.'));
 

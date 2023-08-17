@@ -29,14 +29,16 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
- *     "weight" = "weight"
+ *     "weight" = "weight",
+ *     "uuid" = "uuid"
  *   },
  *   config_export = {
  *     "id" = "id",
  *     "label" = "label",
  *     "template" = "template",
  *     "uid" = "uid",
- *     "global" = "global"
+ *     "global" = "global",
+ *     "uuid" = "uuid"
  *   }
  * )
  */

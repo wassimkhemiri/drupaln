@@ -4,8 +4,8 @@ namespace Drupal\dxpr_builder\Service;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Drupal\Core\Session\AccountProxyInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class to load and save content locks.
@@ -130,6 +130,9 @@ class ContentLock {
    *   The entity type.
    * @param string $langcode
    *   The language code of the language.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The json response
    */
   public function saveLockedContent($entity_id, $revision_id, $entity_type, $langcode) {
     $this->database->insert('dxpr_lock')
@@ -157,7 +160,7 @@ class ContentLock {
    * @param string $langcode
    *   The language code of the language.
    */
-  public function deleteLockedContent($entity_id, $revision_id, $entity_type, $langcode) {
+  public function deleteLockedContent($entity_id, $revision_id, $entity_type, $langcode): void {
     $this->database->delete('dxpr_lock')
       ->condition('entity_id', $entity_id)
       ->condition('revision_id', $revision_id)
@@ -178,7 +181,7 @@ class ContentLock {
    * @param string $langcode
    *   The language code of the language.
    *
-   * @return array
+   * @return mixed[]
    *   get locked content
    */
   public function getLockedContent($entity_id, $revision_id, $entity_type, $langcode) {

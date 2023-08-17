@@ -42,6 +42,8 @@ use Drupal\dxpr_builder\DxprBuilderProfileInterface;
  *     "elements",
  *     "blocks",
  *     "views",
+ *     "page_templates",
+ *     "user_templates",
  *     "inline_buttons",
  *     "modal_buttons"
  *   }
@@ -113,6 +115,20 @@ class DxprBuilderProfile extends ConfigEntityBase implements DxprBuilderProfileI
   protected $views = [];
 
   /**
+   * The profile page templates.
+   *
+   * @var string[]
+   */
+  protected $page_templates = [];
+
+  /**
+   * The profile user templates.
+   *
+   * @var string[]
+   */
+  protected $user_temlates = [];
+
+  /**
    * The profile buttons (inline mode).
    *
    * @var string[]
@@ -127,9 +143,15 @@ class DxprBuilderProfile extends ConfigEntityBase implements DxprBuilderProfileI
   protected $modal_buttons = [];
 
   /**
-   * {@inheritdoc}
+   * Loads the first profile available for specified roles.
+   *
+   * @phpstan-param array<string, mixed> $roles
+   *   The roles.
+   *
+   * @phpstan-return \Drupal\dxpr_builder\DxprBuilderProfileInterface|null
+   *   User profile or empty array.
    */
-  public static function loadByRoles(array $roles) {
+  public static function loadByRoles(array $roles): ?DxprBuilderProfileInterface {
     $profiles = DxprBuilderProfile::loadMultiple();
     uasort($profiles, [DxprBuilderProfile::class, 'sort']);
 
@@ -139,7 +161,7 @@ class DxprBuilderProfile extends ConfigEntityBase implements DxprBuilderProfileI
       }
     }
 
-    return [];
+    return NULL;
   }
 
 }

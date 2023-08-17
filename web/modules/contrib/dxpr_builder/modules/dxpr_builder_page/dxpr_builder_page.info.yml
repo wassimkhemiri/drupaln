@@ -1,7 +1,7 @@
 name: DXPR Builder Drag and Drop Page
 description: Content type with DXPR Builder drag and drop solution
 type: module
-core_version_requirement: ^9.3 || ^10
+core_version_requirement: '>=9.3'
 package: DXPR
 dependencies:
   - drupal:text
@@ -19,9 +19,9 @@ config:
     - field.field.node.drag_and_drop_page.field_dth_main_content_width
     - field.field.node.drag_and_drop_page.field_dth_page_layout
 # project: 'dxpr_builder'
-# version: '2.2.0'
+# version: '2.2.8'
 
-# Information added by Drupal.org packaging script on 2022-12-16
-version: '2.2.0'
+# Information added by Drupal.org packaging script on 2023-08-03
+version: '2.2.8'
 project: 'dxpr_builder'
-datestamp: 1671201599
+datestamp: 1691061170

@@ -2,14 +2,15 @@
 
 namespace Drupal\dxpr_builder\Form;
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Cache\Cache;
 use Drupal\dxpr_builder\Service\DxprBuilderJWTDecoder;
+use Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form for DXPR Builder Settings.
@@ -45,6 +46,13 @@ class DxprBuilderSettingsForm extends FormBase {
   protected $jwtDecoder;
 
   /**
+   * DXPR license service.
+   *
+   * @var \Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface
+   */
+  protected $license;
+
+  /**
    * Class constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
@@ -55,28 +63,35 @@ class DxprBuilderSettingsForm extends FormBase {
    *   The entity type manager service.
    * @param \Drupal\dxpr_builder\Service\DxprBuilderJWTDecoder $jwtDecoder
    *   Parsing DXPR JWT token.
+   * @param \Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface $license
+   *   DXPR license service.
    */
   public function __construct(
     ConfigFactoryInterface $configFactory,
     ModuleHandlerInterface $moduleHandler,
     EntityTypeManagerInterface $entityTypeManager,
-    DxprBuilderJWTDecoder $jwtDecoder
+    DxprBuilderJWTDecoder $jwtDecoder,
+    DxprBuilderLicenseServiceInterface $license
   ) {
     $this->configFactory = $configFactory;
     $this->moduleHandler = $moduleHandler;
     $this->entityTypeManager = $entityTypeManager;
     $this->jwtDecoder = $jwtDecoder;
+    $this->license = $license;
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return mixed
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
       $container->get('module_handler'),
       $container->get('entity_type.manager'),
-      $container->get('dxpr_builder.jwt_decoder')
+      $container->get('dxpr_builder.jwt_decoder'),
+      $container->get('dxpr_builder.license_service')
     );
   }
 
@@ -89,8 +104,11 @@ class DxprBuilderSettingsForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
+   * @phpstan-return array<string, mixed>
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
 
     // $form = parent::buildForm($form, $form_state);
     $config = $this->configFactory->get('dxpr_builder.settings');
@@ -183,8 +201,11 @@ class DxprBuilderSettingsForm extends FormBase {
     ];
     $default = ['' => $this->t('None (Use basic file upload widget)')];
     if ($this->moduleHandler->moduleExists('entity_browser')) {
-      /** @var array $media_browsers */
-      $media_browsers = $this->entityTypeManager->getStorage('entity_browser')->getQuery()->execute();
+      /** @var array<mixed> $media_browsers */
+      $media_browsers = $this->entityTypeManager->getStorage('entity_browser')
+        ->getQuery()
+        ->accessCheck(TRUE)
+        ->execute();
       $media_browsers = $default + $media_browsers;
     }
     else {
@@ -247,8 +268,10 @@ class DxprBuilderSettingsForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
     $jwtPayloadData = $this->jwtDecoder->decodeJwt($form_state->getValue('json_web_token'));
     if ($jwtPayloadData['sub'] === NULL || $jwtPayloadData['scope'] === NULL) {
       $form_state->setErrorByName('json_web_token', $this->t('Your DXPR Builder product key can’t be read, please make sure you copy the whole key without any trailing or leading spaces into the form.'));
@@ -264,12 +287,15 @@ class DxprBuilderSettingsForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $config = $this->configFactory->getEditable('dxpr_builder.settings');
 
     $old_editor_assets_source = $config->get('editor_assets_source');
     $old_json_web_token = $config->get('json_web_token');
+    $new_json_web_token = trim($form_state->getValue('json_web_token'));
 
     $config
       ->set('bootstrap', $form_state->getValue('bootstrap'))
@@ -279,7 +305,7 @@ class DxprBuilderSettingsForm extends FormBase {
       ->set('format_filters', $form_state->getValue('format_filters'))
       ->set('media_browser', $form_state->getValue('media_browser'))
       ->set('offset_selector', $form_state->getValue('offset_selector'))
-      ->set('json_web_token', trim($form_state->getValue('json_web_token')))
+      ->set('json_web_token', $new_json_web_token)
       ->save();
 
     $this->messenger()->addStatus($this->t('The configuration has been updated'));
@@ -290,6 +316,14 @@ class DxprBuilderSettingsForm extends FormBase {
     // There is no cache tag for this part.
     if ($old_editor_assets_source != $config->get('editor_assets_source') || $old_json_web_token != $config->get('json_web_token')) {
       drupal_flush_all_caches();
+    }
+
+    // Move users to new license when changing or setting a new license.
+    if ($old_json_web_token != $new_json_web_token) {
+      if ($old_json_web_token) {
+        $this->license->syncAllUsersWithCentralStorage(DxprBuilderLicenseServiceInterface::DXPR_USER_REMOVE_OPERATION, $old_json_web_token);
+      }
+      $this->license->syncAllUsersWithCentralStorage(DxprBuilderLicenseServiceInterface::DXPR_USER_ADD_OPERATION, $new_json_web_token);
     }
   }
 

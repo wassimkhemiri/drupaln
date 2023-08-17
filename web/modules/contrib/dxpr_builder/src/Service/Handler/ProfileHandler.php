@@ -41,17 +41,23 @@ class ProfileHandler {
 
   /**
    * Method description.
+   *
+   * @return mixed[]
+   *   The dxpr builder profiles array values.
    */
   public function buildSettings(DxprBuilderProfileInterface $profile) {
     $hide_main_elements = array_diff_key(self::getMainElements(), array_combine($profile->get('elements'), $profile->get('elements')));
     $hide_block_elements = array_diff_key($this->getBlockElements(), array_combine($profile->get('blocks'), $profile->get('blocks')));
     $hide_view_elements = array_diff_key($this->getViewElements(), array_combine($profile->get('views'), $profile->get('views')));
+    $page_templates = is_array($page_templates = $profile->get('page_templates')) ? array_combine($page_templates, $page_templates) : [];
+    $user_templates = is_array($user_templates = $profile->get('user_templates')) ? array_combine($user_templates, $user_templates) : [];
     $hide_elements = array_merge($hide_main_elements, $hide_block_elements, $hide_view_elements);
     $dxpr_editor = $profile->get('dxpr_editor');
-
     $cke_config = self::getCkeConfig($profile);
     return [
       'hide_els' => $hide_elements,
+      'page_templates' => $page_templates,
+      'global_templates' => $user_templates,
       'ck_config' => $cke_config,
       'dxpr_editor' => $dxpr_editor,
       'name' => $profile->get("label"),
@@ -60,6 +66,9 @@ class ProfileHandler {
 
   /**
    * Returns main elements.
+   *
+   * @return mixed[]
+   *   The html main elements values.
    */
   protected static function getMainElements() {
     return [
@@ -67,6 +76,7 @@ class ProfileHandler {
       'az_alert' => t('Alert'),
       'az_blockquote' => t('Blockquote'),
       'az_button' => t('Button'),
+      'az_card' => t('Card (Bootstrap 4/5)'),
       'az_circle_counter' => t('Circle Counter'),
       'az_countdown' => t('Countdown'),
       'az_counter' => t('Counter'),
@@ -77,12 +87,13 @@ class ProfileHandler {
       'az_jumbotron' => t('Jumbotron'),
       'az_link' => t('Link'),
       'az_map' => t('Map'),
-      'az_panel' => t('Panel'),
+      'az_panel' => t('Panel (Bootstrap 3)'),
       'az_progress_bar' => t('Progress Bar'),
       'az_separator' => t('Separator'),
       'az_text' => t('Text'),
       'az_video' => t('Video'),
-      'az_well' => t('Well'),
+      'az_video_local' => t('Local Video'),
+      'az_well' => t('Well (Bootstrap 3)'),
       'az_carousel' => t('Carousel'),
       'az_container' => t('Container'),
       'az_layers' => t('Layers'),
@@ -96,6 +107,9 @@ class ProfileHandler {
 
   /**
    * Return block elements.
+   *
+   * @return mixed[]
+   *   The block elements values.
    */
   protected function getBlockElements() {
 
@@ -125,6 +139,9 @@ class ProfileHandler {
 
   /**
    * Returns view elements.
+   *
+   * @return mixed[]
+   *   The view elements values.
    */
   protected function getViewElements() {
     $views_elements = [];
@@ -144,7 +161,10 @@ class ProfileHandler {
   }
 
   /**
-   * Return CKEditor config.
+   * Return CKEditor.
+   *
+   * @return mixed[]
+   *   The CKEditor config values.
    */
   protected static function getCkeConfig(DxprBuilderProfileInterface $profile) {
 

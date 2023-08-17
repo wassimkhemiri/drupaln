@@ -113,14 +113,6 @@ elements.animate:
     theme:
       dxpr_builder/vendor/managed/animate.css/animate.min.css: { minified: true }
 
-elements.ytplayer:
-  version: VERSION
-  css:
-    theme:
-      dxpr_builder/vendor/managed/jquery.mb.YTPlayer/dist/css/jquery.mb.YTPlayer.min.css: { minified: true }
-  js:
-    dxpr_builder/vendor/managed/jquery.mb.YTPlayer/dist/jquery.mb.YTPlayer.min.js: { minified: true }
-
 elements.owlcarousel:
   version: VERSION
   css:

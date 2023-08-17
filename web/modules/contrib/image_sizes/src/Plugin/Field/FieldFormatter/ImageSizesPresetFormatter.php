@@ -125,11 +125,27 @@ class ImageSizesPresetFormatter extends FormatterBase {
     if (!$uri) {
       return [];
     }
+
+    $allowed_properties = ['alt', 'title'];
+
+    $attributes = $this->getAttributes($item);
+
+    $attributes = array_filter($attributes,
+      function ($key) use ($allowed_properties, $attributes) {
+        return in_array($key, $allowed_properties) && !empty($attributes[$key]);
+      }, ARRAY_FILTER_USE_KEY
+    );
+
+    if ($this->getSetting('load_invisible')) {
+      $attributes['class'] = ['load-always'];
+    }
+
     $preset = $this->getPreset();
     $render = [
       '#theme' => 'image_sizes',
       '#style' => $preset,
       '#entity' => $entity,
+      '#attributes' => $attributes,
       '#lazy' => FALSE,
     ];
 

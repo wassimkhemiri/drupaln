@@ -8,6 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ExtensionPathResolver;
+use Drupal\Core\Extension\InfoParser;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -19,14 +20,14 @@ use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\dxpr_builder\Entity\DxprBuilderProfile;
+use Drupal\dxpr_builder\Service\DxprBuilderJWTDecoder;
 use Drupal\dxpr_builder\Service\DxprBuilderLicenseServiceInterface;
 use Drupal\dxpr_builder\Service\DxprBuilderServiceInterface;
 use Drupal\dxpr_builder\Service\Handler\ProfileHandler;
-use Drupal\dxpr_builder\Service\DxprBuilderJWTDecoder;
-use Drupal\Core\Extension\InfoParser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -44,6 +45,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * )
  */
 class DxprBuilderFormatter extends FormatterBase {
+
+  use StringTranslationTrait;
 
   /**
    * The current user.
@@ -180,13 +183,13 @@ class DxprBuilderFormatter extends FormatterBase {
    *   The formatter definition.
    * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
    *   The definition of the field.
-   * @param array $settings
+   * @param mixed[] $settings
    *   The settings of the formatter.
    * @param string $label
    *   The position of the lable when the field is rendered.
    * @param string $view_mode
    *   The current view mode.
-   * @param array $third_party_settings
+   * @param mixed[] $third_party_settings
    *   Any third-party settings.
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
@@ -283,9 +286,16 @@ class DxprBuilderFormatter extends FormatterBase {
   }
 
   /**
-   * Description.
+   * {@inheritdoc}
+   *
+   * @phpstan-param array<mixed> $configuration
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition
+  ) {
     return new static(
       $plugin_id,
       $plugin_definition,
@@ -327,9 +337,22 @@ class DxprBuilderFormatter extends FormatterBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Builds a renderable array for a field value.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   The field values to be rendered.
+   * @param mixed $langcode
+   *   The language that should be used to render the field.
+   *
+   * @phpstan-param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
+   *
+   * @return array
+   *   A renderable array for $items, as an array of child elements keyed by
+   *   consecutive numeric indexes starting from 0.
+   *
+   * @phpstan-return array<string, mixed>
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $element = [];
 
     $config = $this->configFactory->get('dxpr_builder.settings');
@@ -360,11 +383,17 @@ class DxprBuilderFormatter extends FormatterBase {
     ];
     if ($has_permission) {
       $within_users_limit = $this->dxprBuilderLicenseService->withinUsersLimit($this->currentUser);
+
+      // Allow user with UID 1 always to have access.
+      if ($this->currentUser->id() === 1) {
+        $within_users_limit = TRUE;
+      }
+
       $within_entities_limit = $this->dxprBuilderLicenseService->withinEntitiesLimit($entity);
       $enable_editor = $within_users_limit && $within_entities_limit;
       if (!$within_users_limit) {
         $license_info = $this->dxprBuilderLicenseService->getLicenseInfo();
-        if (!empty($license_info['entities_limit'])) {
+        if ($license_info['tier'] == 'free') {
           $username = $this->entityTypeManager->getStorage('user')->load(1)->name->value;
           $warning = $this->t('Oops, the no-code editor is not loading here. Only one account can use DXPR Builder on the DXPR Free tier. This permission is automatically assigned to the user account with username "%username". Please <a href="@add_subscription" target="_blank">add a paid subscription at DXPR.com</a> to use DXPR Builder with more than one user.', [
             '%username' => $username,
@@ -373,18 +402,29 @@ class DxprBuilderFormatter extends FormatterBase {
           $messages_active['free_users_limit'] = TRUE;
         }
         else {
-          $warning = $this->t('Oops, the no-code editor is not loading here because there are insufficient User licenses included in your DXPR.com subscription. You currently have @users accounts set up here to use DXPR Builder but there are only @users_limit Users available to your account. Please <a href="@add_users" target="_blank">add more Users to your subscription</a> or <a href="@manage_people">remove DXPR Builder editing privileges</a> from user accounts to resolve this.', [
+          $add_users_url = 'https://app.dxpr.com/user/me/subscription/add-ons';
+          $manage_people_url = Url::fromRoute('entity.user.collection')->toString();
+          $dxpr_builder_user_licenses_url = Url::fromRoute('dxpr_builder.user_licenses')->toString();
+
+          $warning = $this->t('Oops, the no-code editor is not loading here because there are insufficient User licenses included in your DXPR.com subscription. There currently are <a href=":dxpr_builder_user_licenses_url">@users accounts</a> connected to your product key to use DXPR Builder but there are only @users_limit Users available to your account. Please <a href=":add_users_url" target="_blank">add more Users to your subscription</a> or <a href=":manage_people_url">remove DXPR Builder editing privileges</a> from user accounts to resolve this.', [
             '@users' => $license_info['users_count'],
             '@users_limit' => $license_info['users_limit'],
-            '@add_users' => 'https://app.dxpr.com/user/me/subscription/add-ons',
-            '@manage_people' => Url::fromRoute('entity.user.collection')->toString(),
+            ':add_users_url' => $add_users_url,
+            ':manage_people_url' => $manage_people_url,
+            ':dxpr_builder_user_licenses_url' => $dxpr_builder_user_licenses_url,
           ]);
           $messages_active['insufficient_users'] = TRUE;
         }
       }
       if (!$within_entities_limit) {
-        $warning = $this->t('Sorry, you cannot author more than 20 content items with DXPR Builder on the DXPR Free tier. Please <a href="@add_subscription" target="_blank">add a paid subscription at DXPR.com</a> to create more content with DXPR Builder.', [
-          '@add_subscription' => 'https://app.dxpr.com/user/me/subscription',
+        $license_info = $this->dxprBuilderLicenseService->getLicenseInfo();
+        $tier = !empty($license_info['tier']) ? ucfirst($license_info['tier']) : $this->t('Free');
+        $dxpr_builder_content_licenses_url = Url::fromRoute('dxpr_builder.licensed_content')->toString();
+        $warning = $this->t('Sorry, you cannot author more than <a href=":dxpr_builder_content_licenses_url">@entities_limit content items</a> with DXPR Builder on the DXPR @tier tier. Please <a href="@add_subscription" target="_blank">upgrade your account at DXPR.com</a> to create more content with DXPR Builder.', [
+          '@add_subscription' => 'https://app.dxpr.com/user/me/subscription/change',
+          '@entities_limit' => $license_info['entities_limit'],
+          '@tier' => $tier,
+          ':dxpr_builder_content_licenses_url' => $dxpr_builder_content_licenses_url,
         ]);
         $messages_active['free_items_limit'] = TRUE;
       }
@@ -392,6 +432,7 @@ class DxprBuilderFormatter extends FormatterBase {
         $this->messenger->addMessage($warning, 'warning');
       }
     }
+
     $element['#attached']['drupalSettings']['dxprBuilder']['messagesActive'] = $messages_active;
 
     foreach ($items as $delta => $item) {
@@ -399,6 +440,7 @@ class DxprBuilderFormatter extends FormatterBase {
       if ($item->getEntity()->id() == NULL) {
         continue;
       }
+      /* @phpstan-ignore-next-line */
       $value = $item->value;
       $element[$delta] = [];
       if ($item->getLangcode()) {
@@ -486,12 +528,12 @@ class DxprBuilderFormatter extends FormatterBase {
    *
    * @param string $container_name
    *   Unique container identifier.
-   * @param array $element
+   * @param mixed[] $element
    *   A renderable array for the $items, as an array of child
    *   elements keyed by numeric indexes starting from 0.
    * @param string $content
    *   Raw field value.
-   * @param string $html_format
+   * @param mixed[] $html_format
    *   Valid HTML field value.
    * @param bool $enable_editor
    *   When FALSE only frontend rendering assets will be attached. When TRUE
@@ -501,20 +543,18 @@ class DxprBuilderFormatter extends FormatterBase {
    * @param string $dxpr_lang
    *   Two letter language code.
    *
+   * @phpstan-return array<string, mixed>
+   *
    * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_formatter_view/7.x
    */
-  public function attachAssets($container_name, array &$element, $content, $html_format, $enable_editor, $mode, $dxpr_lang) {
+  public function attachAssets($container_name, array &$element, $content, $html_format, $enable_editor, $mode, $dxpr_lang): array {
     $config = $this->configFactory->get('dxpr_builder.settings');
 
     $settings = [];
     $settings['disallowContainers'] = [];
     $settings['currentPath'] = $this->currentPathStack->getPath();
 
-    $offset_selector = $config->get('offset_selector') ?: '.dxpr-theme-header--sticky, .dxpr-theme-header--fixed';
-
-    if ($offset_selector) {
-      $settings['offsetSelector'] = $offset_selector;
-    }
+    $settings['offsetSelector'] = $config->get('offset_selector') ?: '.dxpr-theme-header--sticky, .dxpr-theme-header--fixed';
 
     if ($enable_editor) {
       $settings['dxprEditor'] = TRUE;
@@ -527,11 +567,10 @@ class DxprBuilderFormatter extends FormatterBase {
     $url = Url::fromRoute('dxpr_builder.ajax_callback');
     $token = $this->csrfToken->get($url->getInternalPath());
     $dxprBuilderPath = $this->getPath('module', 'dxpr_builder');
-    $url->setOptions(['absolute' => TRUE, 'query' => ['token' => $token]]);
+    $url->setOptions(['query' => ['token' => $token]]);
     $settings['dxprAjaxUrl'] = $url->toSTring();
 
     $csrf_url = Url::fromRoute('dxpr_builder.csrf_refresh');
-    $csrf_url->setOptions(['absolute' => TRUE]);
     $settings['dxprCsrfUrl'] = $csrf_url->toSTring();
 
     $settings['dxprLanguage'] = $dxpr_lang;
@@ -562,6 +601,7 @@ class DxprBuilderFormatter extends FormatterBase {
 
       $settings['dxprUserInfo'] = [
         'local_email' => $this->currentUser->getEmail(),
+        'local_email_hashed' => $this->hashEmail($this->currentUser->getEmail(), 14),
         'local_uid' => $this->currentUser->id(),
         'local_username' => $this->currentUser->getDisplayName(),
         'default_theme' => $this->themeHandler->getDefault(),
@@ -573,7 +613,7 @@ class DxprBuilderFormatter extends FormatterBase {
 
       $settings['dxprSiteInfo'] = [
         'dxpr_builder_editors' => $this->dxprBuilderLicenseService->getUsersCount(),
-        'dxpr_builder_items' => $this->dxprBuilderLicenseService->getValuesCount(),
+        'dxpr_builder_items' => $this->dxprBuilderLicenseService->getValuesCount(NULL, NULL),
       ];
     }
 
@@ -649,6 +689,8 @@ class DxprBuilderFormatter extends FormatterBase {
     }
 
     $element['#attached']['drupalSettings']['dxprBuilder'] = $settings;
+
+    return [];
   }
 
   /**
@@ -676,16 +718,41 @@ class DxprBuilderFormatter extends FormatterBase {
 
   /**
    * Get the theme color pallette for the current theme.
+   *
+   * @return array|null
+   *   Return color palette if possible.
+   *
+   * @phpstan-return array<string, mixed>
    */
-  private function colorGetPalette() {
+  private function colorGetPalette(): ?array {
     $default_theme = $this->configFactory->get('system.theme')->get('default');
 
+    /* @phpstan-ignore-next-line */
     $info = color_get_info($default_theme);
     if ($info && array_key_exists('colors', $info['schemes']['default'])) {
+      /* @phpstan-ignore-next-line */
       return color_get_palette($default_theme);
     }
 
-    return FALSE;
+    return NULL;
+  }
+
+  /**
+   * Partly hash an email address with sha256.
+   *
+   * @param string $email
+   *   The email address.
+   * @param int $length
+   *   (optional) The length of the returned string.
+   *
+   * @return string
+   *   The hashed email address.
+   */
+  private function hashEmail($email, $length = 0) {
+    $parts = explode('@', $email);
+    $hashed = hash('sha256', $parts[0] . "48dfhj2k9");
+    $hashed = ($length > 0) ? substr($hashed, 0, $length) : $hashed;
+    return $hashed . '@' . $parts[1];
   }
 
 }

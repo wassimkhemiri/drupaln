@@ -22,7 +22,9 @@ class WebformBlock extends BlockBase {
    * {@inheritdoc}
    */
   protected function blockAccess(AccountInterface $account) {
+    /** @var \Drupal\webform\WebformInterface $webform */
     $webform = Webform::load($this->getDerivativeId());
+    /* @phpstan-ignore-next-line */
     if (!$webform || !$webform->access('submission_create', $account)) {
       return AccessResult::forbidden();
     }
@@ -31,8 +33,13 @@ class WebformBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array
+   *   Build array with webform.
+   *
+   * @phpstan-return array<string, mixed>
    */
-  public function build() {
+  public function build(): array {
     $build = [];
     if (Webform::load($this->getDerivativeId())) {
       $build = [

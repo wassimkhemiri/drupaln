@@ -63,7 +63,7 @@ class UploadHandler {
     $this->upload_type = $upload_type;
     $url = Url::fromRoute('dxpr_builder.ajax_file_upload_callback');
     $token = \Drupal::csrfToken()->get($url->getInternalPath());
-    $url->setOptions(['absolute' => TRUE, 'query' => ['token' => $token]]);
+    $url->setOptions(['query' => ['token' => $token]]);
     $this->options = [
       'script_url' => $url->toString(),
       'upload_dir' => 'temporary://',

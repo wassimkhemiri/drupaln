@@ -2,11 +2,11 @@
 
 namespace Drupal\dxpr_builder\Form;
 
+use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Views;
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Block\BlockManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,6 +35,8 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return mixed
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -44,8 +46,11 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
+   * @phpstan-return array<string, mixed>
    */
-  public function form(array $form, FormStateInterface $form_state) {
+  public function form(array $form, FormStateInterface $form_state): array {
 
     $form = parent::form($form, $form_state);
 
@@ -92,8 +97,12 @@ class DxprBuilderProfileForm extends EntityForm {
       '#title' => $this->t('Roles'),
       '#description' => $this->t('Select one or more user roles that this profile will be active on.'),
     ];
+
+    /** @var \Drupal\user\RoleInterface[] $roles */
+    $roles = $this->entityTypeManager->getStorage('user_role')->loadMultiple();
+
     $options = [];
-    foreach (user_roles(TRUE) as $role_id => $role) {
+    foreach ($roles as $role_id => $role) {
       $options[$role_id] = $role->label();
     }
 
@@ -186,6 +195,49 @@ class DxprBuilderProfileForm extends EntityForm {
       '#default_value' => $this->entity->isNew() ? array_keys($views_elements) : $this->entity->get('views'),
     ];
 
+    $form['page_templates_wrapper'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Page templates'),
+      '#description' => $this->t('Select page templates that should be available to users on this profile. Newly created page templates are not enabled automatically for the profile.'),
+    ];
+
+    $page_templates = $this->entityTypeManager->getStorage('dxpr_builder_page_template')
+      ->loadByProperties(['status' => 1]);
+
+    $page_templates_enabled = [];
+    foreach ($page_templates as $page_template) {
+      $page_templates_enabled[$page_template->uuid()] = $page_template->label();
+    }
+    $form['page_templates_wrapper']['page_templates'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Page templates'),
+      '#options' => $page_templates_enabled,
+      '#default_value' => $this->entity->isNew() ? array_keys($page_templates_enabled) : $this->entity->get('page_templates'),
+    ];
+
+    $form['user_templates_wrapper'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Global user templates'),
+      '#description' => $this->t('Select global user templates that should be available to users on this profile. Newly created user templates are not enabled automatically for the profile.'),
+    ];
+
+    $user_templates = $this->entityTypeManager->getStorage('dxpr_builder_user_template')
+      ->loadByProperties([
+        'status' => 1,
+        'global' => 1,
+      ]);
+
+    $user_templates_enabled = [];
+    foreach ($user_templates as $user_template) {
+      $user_templates_enabled[$user_template->uuid()] = $user_template->label();
+    }
+    $form['user_templates_wrapper']['user_templates'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Global user templates'),
+      '#options' => $user_templates_enabled,
+      '#default_value' => $this->entity->isNew() ? array_keys($user_templates_enabled) : $this->entity->get('user_templates'),
+    ];
+
     $form['inline_buttons'] = [
       '#type' => 'details',
       '#title' => $this->t('Text Editor buttons (inline editing)'),
@@ -229,14 +281,18 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
     $values = $form_state->getValues();
     // Make the roles export more readable.
     $values['roles'] = array_values(array_filter($values['roles']));
     $values['elements'] = array_values(array_filter($values['elements']));
     $values['blocks'] = array_values(array_filter($values['blocks']));
     $values['views'] = array_values(array_filter($values['views']));
+    $values['page_templates'] = array_values(array_filter($values['page_templates']));
+    $values['user_templates'] = array_values(array_filter($values['user_templates']));
     $values['inline_buttons'] = array_keys(array_filter($values['inline_buttons']));
     $values['modal_buttons'] = array_keys(array_filter($values['modal_buttons']));
     $form_state->setValues($values);
@@ -244,8 +300,10 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
    */
-  public function save(array $form, FormStateInterface $form_state) {
+  public function save(array $form, FormStateInterface $form_state): int {
 
     $result = parent::save($form, $form_state);
     $message_args = ['%label' => $this->entity->label()];
@@ -262,13 +320,19 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * Returns element options.
+   *
+   * @return array
+   *   List of DXPR Builder elements.
+   *
+   * @phpstan-return array<string, mixed>
    */
-  public function getElements() {
+  public function getElements(): array {
     return [
       'az_accordion' => $this->t('Accordion'),
       'az_alert' => $this->t('Alert'),
       'az_blockquote' => $this->t('Blockquote'),
       'az_button' => $this->t('Button'),
+      'az_card' => $this->t('Card (Bootstrap 4/5)'),
       'az_circle_counter' => $this->t('Circle Counter'),
       'az_countdown' => $this->t('Countdown'),
       'az_counter' => $this->t('Counter'),
@@ -279,13 +343,13 @@ class DxprBuilderProfileForm extends EntityForm {
       'az_jumbotron' => $this->t('Jumbotron'),
       'az_link' => $this->t('Link'),
       'az_map' => $this->t('Map'),
-      'az_panel' => $this->t('Panel'),
+      'az_panel' => $this->t('Panel (Bootstrap 3)'),
       'az_progress_bar' => $this->t('Progress Bar'),
       'az_separator' => $this->t('Separator'),
       'az_text' => $this->t('Text'),
       'az_video' => $this->t('Video'),
       'az_video_local' => $this->t('Local Video'),
-      'az_well' => $this->t('Well'),
+      'az_well' => $this->t('Well (Bootstrap 3)'),
       'az_carousel' => $this->t('Carousel'),
       'az_container' => $this->t('Container'),
       'az_layers' => $this->t('Layers'),
@@ -299,8 +363,13 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * Returns all available CKEditor buttons.
+   *
+   * @return array
+   *   List of DXPR Builder buttons.
+   *
+   * @phpstan-return array<string, mixed>
    */
-  protected static function getAllButtons() {
+  protected static function getAllButtons(): array {
     return [
       'Bold' => 'Bold',
       'Italic' => 'Italic',
@@ -362,8 +431,13 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * Returns default buttons for inline mode.
+   *
+   * @return array
+   *   List of DXPR Builder inline buttons.
+   *
+   * @phpstan-return array<int, string>
    */
-  protected static function getInlineButtons() {
+  protected static function getInlineButtons(): array {
     return [
       'Bold',
       'Italic',
@@ -388,8 +462,13 @@ class DxprBuilderProfileForm extends EntityForm {
 
   /**
    * Returns default buttons form modal mode.
+   *
+   * @return array
+   *   List of DXPR Builder modal buttons.
+   *
+   * @phpstan-return array<int, string>
    */
-  protected static function getModalButtons() {
+  protected static function getModalButtons(): array {
     return [
       'Bold',
       'Italic',

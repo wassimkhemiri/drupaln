@@ -62,7 +62,7 @@ function iOSversion() {
 	jQuery.mbYTPlayer = {
 		name   : 'jquery.mb.YTPlayer',
 		version: '3.3.8',
-		build  : '7561',
+		build  : '7562',
 		author : 'Matteo Bicocchi (pupunzi)',
 		apiKey : '',
 
@@ -567,7 +567,7 @@ function iOSversion() {
 				YTPlayer.wrapper.append(playerBox);
 				playerBox.after(YTPlayer.overlay);
 
-				if (YTPlayer.isPlayer) {
+				if (YTPlayer.isPlayer && YTPlayer.opt.isStandAlonePlayer) {
 					YTPlayer.inlineWrapper = jQuery('<div/>').addClass('inline-YTPlayer');
 
 					YTPlayer.inlineWrapper.css({
@@ -857,7 +857,7 @@ function iOSversion() {
 							}
 						});
 
-						$YTPlayer.on('YTPlayerIsReady_' + YTPlayer.id, function () {
+						$YTPlayer.one('YTPlayerIsReady_' + YTPlayer.id, function () {
 
 							if (YTPlayer.isReady)
 								return this;
@@ -2865,7 +2865,7 @@ jQuery.fn.css3=function(d){return this.each(function(){var a=jQuery(this),b=jQue
  file: jquery.mb.simpleSlider.js
  last modified: 11/18/17 7:19 PM
  Version:  3.3.8
- Build:  7561
+ Build:  7562
  
  Open Lab s.r.l., Florence - Italy 
  email:  matteo@open-lab.com

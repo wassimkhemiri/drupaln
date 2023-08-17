@@ -45,7 +45,8 @@ use Drupal\dxpr_builder\DxprBuilderPageTemplateInterface;
  *     "category" = "category",
  *     "template" = "template",
  *     "weight" = "weight",
- *     "image" = "image"
+ *     "image" = "image",
+ *     "uuid" = "uuid"
  *   }
  * )
  */

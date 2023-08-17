@@ -12,9 +12,10 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Entity\RevisionLogInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\Element;
@@ -292,6 +293,8 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return mixed
    */
   public static function create(ContainerInterface $container) {
     return new static(
@@ -320,7 +323,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * {@inheritdoc}
    */
-  public function ajaxRefresh() {
+  public function ajaxRefresh(): JsonResponse {
     $url = Url::fromRoute('dxpr_builder.ajax_callback');
 
     // Check if request related to enterprise.
@@ -337,7 +340,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
     }
 
     $token = $this->csrfToken->get($url->getInternalPath());
-    $url->setOptions(['absolute' => TRUE, 'query' => ['token' => $token]]);
+    $url->setOptions(['query' => ['token' => $token]]);
 
     return new JsonResponse($url->toSTring());
   }
@@ -345,7 +348,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * {@inheritdoc}
    */
-  public function ajaxCallback() {
+  public function ajaxCallback(): Response {
     $post_action = $this->requestStack->getCurrentRequest()->request->get('action');
     $action = $post_action ? $post_action : FALSE;
     $response = new AjaxResponse('');
@@ -364,7 +367,6 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
           $url = Url::fromRoute('dxpr_builder.ajax_callback');
           $token = $this->csrfToken->get($url->getInternalPath());
           $url->setOptions([
-            'absolute' => TRUE,
             'query' => ['token' => $token],
           ]
           );
@@ -478,8 +480,9 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
             $html = $this->renderer->render($data);
           }
           if ($name[0] === 'block') {
-            // Name is for example "block-system_menu_block:main".
-            $settings = $this->getBlockSettings($name[1]);
+            // Name is for example "block-system_menu_block:secondary-menu".
+            $plugin_id = substr($post_name, 6);
+            $settings = $this->getBlockSettings($plugin_id);
             // Render the fields in a form tag as expected by the frontend.
             // @see CMSSettingsParamType()
             $settings['#printed'] = FALSE;
@@ -501,7 +504,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
         $name = $request->get('name');
         $element_info = $this->dxprBuilderService->parseStringForCmsElementInfo($name);
         $settings = $request->get('settings');
-        $data = $request->all('data');
+        $data = $request->all()['data'];
 
         $assets = $this->fetchPreRenderAssets();
         $html = $this->loadCmsElement($element_info, $settings, $data, $assets);
@@ -573,7 +576,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
       // Accept an array of fids and return comma-separated image URLs.
       case 'dxpr_builder_get_image_urls':
         if ($this->currentUser->hasPermission('edit with dxpr builder')) {
-          $entityIds = $this->requestStack->getCurrentRequest()->request->all('entityIDs');
+          $entityIds = $this->requestStack->getCurrentRequest()->request->all()['entityIDs'];
           $imageStyle = $this->requestStack->getCurrentRequest()->request->get('imageStyle');
           $entityType = $this->requestStack->getCurrentRequest()->request->get('entityType');
           if ($entityType === "media") {
@@ -641,6 +644,9 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Returns json response.
    */
   public function validateHelpLink() {
     $help_link = $this->requestStack->getCurrentRequest()->request->get('help_link');
@@ -648,6 +654,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
     if ($help_link && strpos($help_link, 'dxpr.com/documentation/')) {
 
       try {
+        /* @phpstan-ignore-next-line */
         $response = $this->httpClient->head($help_link);
 
         // Send TRUE if help link is valid and exists on dxpr.com.
@@ -666,7 +673,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * {@inheritdoc}
    */
-  public function fileUpload() {
+  public function fileUpload(): Response {
     $type = $this->requestStack->getCurrentRequest()->get('type');
     switch ($type) {
       case 'video':
@@ -685,6 +692,9 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
 
   /**
    * Get the base URL of the current request.
+   *
+   * @return string
+   *   The path.
    */
   private function getBase() {
     $current_request = $this->requestStack->getCurrentRequest();
@@ -774,7 +784,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
       }
     }
 
-    $query = $this->entityTypeManager->getStorage($entityType)->getQuery();
+    $query = $this->entityTypeManager->getStorage($entityType)->getQuery()->accessCheck(TRUE);
     $entity_ids = $query->condition('type', $bundle)
       ->execute();
     $entities = $this->entityTypeManager->getStorage($entityType)->loadMultiple($entity_ids);
@@ -808,9 +818,9 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    *   The type of entity.
    * @param string $bundle
    *   The type of bundle.
-   * @param int $entityId
+   * @param string|int $entityId
    *   The entity ID.
-   * @param int $revisionId
+   * @param string|int $revisionId
    *   The entity revision ID.
    * @param string $fieldName
    *   The field name.
@@ -825,9 +835,13 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   private function saveContainer($entityType, $bundle, $entityId, $revisionId, $fieldName, $encodedHtml, $langcode) {
     // Saves DXPR Builder container instance to field, respecting
     // permissions, language and revisions if supported.
-    $revisionableEntity = $this->entityTypeManager->getStorage($entityType)->getEntityType()->isRevisionable();
-    if ($revisionableEntity && !empty($revisionId)) {
-      $entity = $this->entityTypeManager->getStorage($entityType)->loadRevision($revisionId);
+    /** @var \Drupal\Core\Entity\RevisionableStorageInterface $entity_storage */
+    $entity_storage = $this->entityTypeManager->getStorage($entityType);
+
+    $revisionableEntity = $entity_storage->getEntityType()->isRevisionable();
+    if ($entity_storage instanceof RevisionableStorageInterface && $revisionableEntity && !empty($revisionId)) {
+      /* @phpstan-ignore-next-line */
+      $entity = $entity_storage->loadRevision($revisionId);
     }
     else {
       $entity = $this->entityTypeManager->getStorage($entityType)->load($entityId);
@@ -876,9 +890,9 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * Loads DXPR Builder field content.
    *
-   * @param string $entityType
+   * @param string|int $entityType
    *   The type of entity.
-   * @param int $entityId
+   * @param string|int $entityId
    *   The ID of the entity to be saved.
    * @param string $fieldName
    *   The name of the field to return.
@@ -918,7 +932,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    * @param string $displayId
    *   The ID of the display for the given view.
    *
-   * @return string
+   * @return mixed[]
    *   The settings for the given view
    */
   private function getViewSettings($viewId, $displayId) {
@@ -937,10 +951,12 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    * @param string $plugin_id
    *   The ID of the block.
    *
-   * @return string
+   * @return array
    *   The settings for the given block
+   *
+   * @phpstan-return array<string, mixed>
    */
-  private function getBlockSettings($plugin_id) {
+  private function getBlockSettings($plugin_id): array {
     $entity = $this->entityTypeManager()->getStorage('block')->create([
       'plugin' => $plugin_id,
       'theme' => NULL,
@@ -976,14 +992,14 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    * #tree is set to TRUE. This method updates the name attributes
    * so that we can extract the correct output client-side.
    *
-   * @param array $form
+   * @param mixed[] $form
    *   The form structure.
    * @param bool $in_tree
    *   Indicates if #tree was set.
    * @param string[] $prefix
    *   Prefix to use for name.
    */
-  private function updateFormNames(array &$form, $in_tree = FALSE, array $prefix = []) {
+  private function updateFormNames(array &$form, $in_tree = FALSE, array $prefix = []): void {
     foreach (Element::children($form) as $name) {
       if (!empty($form[$name]['#name'])) {
         $html_name = '';
@@ -1008,10 +1024,10 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    * Fieldsets do not expand/collapse in all admin themes (e.g. Bootstrap).
    * Expanding all fieldsets ensures that they remain usable in all themes.
    *
-   * @param array $form
+   * @param mixed[] $form
    *   The form structure.
    */
-  private function expandFieldsets(array &$form) {
+  private function expandFieldsets(array &$form): void {
     foreach (Element::children($form) as $name) {
       if (isset($form[$name]['#type']) && $form[$name]['#type'] == 'details') {
         $form[$name]['#open'] = TRUE;
@@ -1023,16 +1039,16 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * Loads settings for a CMS element - often views.
    *
-   * @param array $element_info
+   * @param mixed[] $element_info
    *   An array of info regarding the element to be returned.
    * @param string $settings
    *   Settings for the elmeent to be loaded.
-   * @param array $data
+   * @param mixed[] $data
    *   Data on the element to be returned.
    * @param \Drupal\Core\Asset\AttachedAssets $assets
    *   Any assets for the found element will be attached to this element.
    */
-  private function loadCmsElement(array $element_info, $settings, array $data, AttachedAssets $assets) {
+  private function loadCmsElement(array $element_info, $settings, array $data, AttachedAssets $assets): string {
     // Loads Drupal block or views display.
     return $this->dxprBuilderService->loadCmsElement($element_info, $settings, $data, $assets);
   }
@@ -1110,7 +1126,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
       ->condition('global', TRUE);
     $query->condition($group);
 
-    $entity_ids = $query->execute();
+    $entity_ids = $query->accessCheck(TRUE)->execute();
     $user_templates = DxprBuilderUserTemplate::loadMultiple($entity_ids);
 
     $templates = [];
@@ -1250,7 +1266,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * Creates image url from file ID.
    *
-   * @param array $fileIds
+   * @param mixed[] $fileIds
    *   Array of files ids.
    * @param string $imageStyle
    *   The image style.
@@ -1300,17 +1316,17 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
   /**
    * Description.
    */
-  private function getRequestTime() {
+  private function getRequestTime(): int {
     return $this->requestStack->getCurrentRequest()->server->get('REQUEST_TIME');
   }
 
   /**
    * Fixes the element for rendering.
    *
-   * @param array $arr
+   * @param mixed[] $arr
    *   Array for scanning.
    */
-  protected function addTagHelper(array &$arr) {
+  protected function addTagHelper(array &$arr): void {
     foreach ($arr as &$v_arr) {
       if (is_array($v_arr) && !empty($v_arr)) {
         if (!empty($v_arr['#tag']) && $v_arr['#tag'] === 'script') {
@@ -1331,7 +1347,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    */
   private function fetchPreRenderAssets() {
     $request = $this->requestStack->getCurrentRequest()->request;
-    $ajax_page_state = $request->all('ajax_page_state');
+    $ajax_page_state = $request->all()['ajax_page_state'];
 
     $assets = new AttachedAssets();
     $assets->setAlreadyLoadedLibraries(isset($ajax_page_state['libraries']) ? explode(',', $ajax_page_state['libraries']) : []);
@@ -1345,7 +1361,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
    * @param \Drupal\Core\Asset\AttachedAssets $assets
    *   Assets retrieved by fetchPreRenderAssets().
    *
-   * @return array
+   * @return mixed[]
    *   Array with keys css, js, and settings.
    */
   private function fetchPostRenderAssets(AttachedAssets $assets) {
@@ -1360,9 +1376,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
       if (!empty($js_asset['drupalSettings']['data']['dxpr_html_head'])) {
         $this->addTagHelper($js_asset['drupalSettings']['data']['dxpr_html_head']);
         $js_header = $this->renderer->render($js_asset['drupalSettings']['data']['dxpr_html_head']);
-        if ($js_header) {
-          $js .= $js_header->__toString();
-        }
+        $js .= $js_header->__toString();
         // Removes html_head from settings because it isn't real settings.
         unset($js_asset['drupalSettings']['data']['dxpr_html_head']);
       }
@@ -1375,9 +1389,7 @@ class AjaxController extends ControllerBase implements AjaxControllerInterface {
             continue;
           }
           $rendered = $this->renderer->render($script);
-          if ($rendered) {
-            $js .= $rendered->__toString();
-          }
+          $js .= $rendered->__toString();
         }
       }
     }

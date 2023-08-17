@@ -28,18 +28,27 @@ class DxprBuilderJWTDecoder {
   }
 
   /**
-   * {@inheritdoc}
+   * Decodes jwt token.
+   *
+   * @param string $access_token
+   *   The token.
+   *
+   * @return mixed[]
+   *   The token properties.
    */
   public function decodeJwt(string $access_token) {
     $cid = 'config:dxpr_builder.settings';
     $data = $this->cache->get($cid);
     if (!$data) {
-      if (!empty($access_token)) {
-        $decodedJWT = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $access_token)[1]))));
+      $access_token_parts = explode('.', $access_token);
+      if (!empty($access_token) && count($access_token_parts) >= 2) {
+        $decoded_part = base64_decode(str_replace('_', '/', str_replace('-', '+', $access_token_parts[1])));
+        $decodedJWT = json_decode($decoded_part);
       }
       else {
-        $decodedJWT = '';
+        $decodedJWT = NULL;
       }
+
       if (!$decodedJWT) {
         $decodedJWTResult = [
           'sub' => NULL,

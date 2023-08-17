@@ -1,16 +1,10 @@
 (({ behaviors }, loadImage, loadedImage) => {
-  const debounces = [];
   function triggerEvent(e) {
-    if (!debounces[e]) {
-      debounces[e] = Drupal.debounce(function () {
-        var event = new Event("image:size-check", {
-          bubbles: false,
-          cancelable: true,
-        });
-        e.dispatchEvent(event);
-      }, 100);
-    }
-    debounces[e]();
+    var event = new Event("image:size-check", {
+      bubbles: false,
+      cancelable: true,
+    });
+    e.dispatchEvent(event);
   }
 
   function data(e) {

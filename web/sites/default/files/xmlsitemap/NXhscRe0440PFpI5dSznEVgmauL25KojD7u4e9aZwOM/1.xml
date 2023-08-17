@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/drupal/web/sitemap.xsl"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url><loc>http://localhost:8081/drupal/web/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+<url><loc>http://localhost:8081/drupal/web/node/13</loc><lastmod>2023-08-14T09:28Z</lastmod><changefreq>weekly</changefreq></url>
+<url><loc>http://localhost:8081/drupal/web/node/14</loc><lastmod>2023-08-15T09:03Z</lastmod><changefreq>daily</changefreq></url>
+<url><loc>http://localhost:8081/drupal/web/node/4</loc><lastmod>2023-08-01T09:02Z</lastmod><changefreq>monthly</changefreq></url>
+<url><loc>http://localhost:8081/drupal/web/node/5</loc><lastmod>2023-08-17T03:12Z</lastmod><changefreq>hourly</changefreq></url>
+<url><loc>http://localhost:8081/drupal/web/node/6</loc><lastmod>2023-08-14T08:02Z</lastmod><changefreq>weekly</changefreq></url>
+<url><loc>http://localhost:8081/drupal/web/node/7</loc><lastmod>2023-08-14T08:02Z</lastmod><changefreq>weekly</changefreq></url>
 </urlset>

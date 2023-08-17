@@ -77,10 +77,6 @@
             } else {
               $input.val(res);
             }
-            $input.trigger("change");
-            parent.jQuery(parent.document).find("#az-media-modal").remove();
-            parent.jQuery(parent.document).find(".modal-backdrop").remove();
-            $input.removeAttr("data-uuid");
           })
           .fail((err) => {
             window.alert(
@@ -88,9 +84,12 @@
                 "Image selection failed, please make sure to select only image files"
               )
             );
+          })
+          .always(() => {
+            $input.trigger("change");
+            $input.removeAttr("data-uuid");
             parent.jQuery(parent.document).find("#az-media-modal").remove();
             parent.jQuery(parent.document).find(".modal-backdrop").remove();
-            $input.removeAttr("data-uuid");
           });
       });
   }

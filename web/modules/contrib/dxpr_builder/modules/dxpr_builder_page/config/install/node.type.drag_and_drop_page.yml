@@ -16,5 +16,5 @@ type: drag_and_drop_page
 description: 'Page builder page with DXPR Builder visual layout builder'
 help: ''
 new_revision: true
-preview_mode: 1
+preview_mode: 0
 display_submitted: false

@@ -93,6 +93,18 @@ dxpr_builder.dxpr_builder_profile.*:
       sequence:
         type: string
         label: View
+    page_templates:
+      type: sequence
+      label: Page templates
+      sequence:
+        type: string
+        label: Page template
+    user_templates:
+      type: sequence
+      label: Global user templates
+      sequence:
+        type: string
+        label: Global user template
     inline_buttons:
       type: sequence
       label: Inline buttons

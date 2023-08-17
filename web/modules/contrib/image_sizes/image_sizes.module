@@ -26,18 +26,20 @@ function image_sizes_theme() {
   ];
 }
 
-
+/**
+ * Preprocess theme_image_sizes.
+ */
 function template_preprocess_image_sizes(&$variables) {
   /**
    * @var \Drupal\image_sizes\ImageSizesService
    */
   $service = \Drupal::service('image_sizes');
-  $attributes = $service->getAttributes($variables['style'], $variables['entity'], true);
+  $attributes = $service->getAttributes($variables['style'], $variables['entity'], TRUE);
   if (!is_array($variables['attributes'])) {
     $variables['attributes'] = [];
   }
   $variables['attributes'] = NestedArray::mergeDeep($variables['attributes'], $attributes->toArray());
   $variables['#attached']['library'] = [
-    'image_sizes/core'
+    'image_sizes/core',
   ];
 }

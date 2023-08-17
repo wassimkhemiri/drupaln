@@ -1,0 +1,14 @@
+views.field.bookable_calendar_available_slots:
+  type: views_field
+  label: 'The available slots for an instance'
+views.field.bookable_calendar_max_slots:
+  type: views_field
+  label: 'The maximum slots for an instance'
+views.filter.bookable_calendar_available_slots_filter:
+  type: views.filter.numeric
+views.filter_value.bookable_calendar_available_slots_filter:
+  type: views.filter_value.numeric
+views.argument.bookable_calendar_available_slots_argument:
+  type: views.argument.numeric
+views.argument.bookable_calendar_minimum_available_slots_argument:
+  type: views.argument.numeric

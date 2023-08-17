@@ -1,0 +1,25 @@
+diff --git a/core/lib/Drupal/Core/Entity/Query/Sql/Tables.php b/core/lib/Drupal/Core/Entity/Query/Sql/Tables.php
+index e218247..710c4c6 100644
+--- a/core/lib/Drupal/Core/Entity/Query/Sql/Tables.php
++++ b/core/lib/Drupal/Core/Entity/Query/Sql/Tables.php
+@@ -225,12 +225,14 @@ public function addField($field, $type, $langcode) {
+             $next = $specifiers[$key + 1];
+           }
+           // Is this a field column?
+-          $columns = $field_storage->getColumns();
+-          if (isset($columns[$next]) || in_array($next, $table_mapping->getReservedColumns())) {
+-            // Use it.
+-            $sql_column = $table_mapping->getFieldColumnName($field_storage, $next);
+-            // Do not process it again.
+-            $key++;
++          if ($field_storage) {
++            $columns = $field_storage->getColumns();
++            if (isset($columns[$next]) || in_array($next, $table_mapping->getReservedColumns())) {
++              // Use it.
++              $sql_column = $table_mapping->getFieldColumnName($field_storage, $next);
++              // Do not process it again.
++              $key++;
++            }
+           }
+         }
+ 

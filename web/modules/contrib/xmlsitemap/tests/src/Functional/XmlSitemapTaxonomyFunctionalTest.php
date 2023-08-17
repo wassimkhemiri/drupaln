@@ -18,19 +18,10 @@ class XmlSitemapTaxonomyFunctionalTest extends XmlSitemapTestBase {
   protected static $modules = ['taxonomy'];
 
   /**
-   * Entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
 
     // Add a vocabulary.
     $vocabulary = Vocabulary::create([
@@ -73,14 +64,7 @@ class XmlSitemapTaxonomyFunctionalTest extends XmlSitemapTestBase {
     ];
     $this->submitForm($edit, t('Save'));
 
-    $term = $this
-      ->entityTypeManager
-      ->getStorage("taxonomy_term")
-      ->loadByProperties([
-        "name" => $term_name,
-        "vid" => 'tags',
-      ]);
-    $term = $term[1];
+    $term = taxonomy_term_load_multiple_by_name($term_name, 'tags')[1];
     $link = $this->linkStorage->load('taxonomy_term', $term->id());
     $this->assertEquals(1, (int) $link['status']);
     $this->assertEquals(1, (int) $link['priority']);

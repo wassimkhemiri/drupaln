@@ -1,0 +1,99 @@
+diff --git a/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php b/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
+index 9ebc59f9af..d1713f6065 100644
+--- a/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
++++ b/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
+@@ -85,7 +85,24 @@ protected function doCreate(array $values) {
+       if (!isset($values[$this->bundleKey])) {
+         throw new EntityStorageException('Missing bundle for entity type ' . $this->entityTypeId);
+       }
+-      $bundle = $values[$this->bundleKey];
++
++      // Normalize the bundle value. This is an optimized version of
++      // \Drupal\Core\Field\FieldInputValueNormalizerTrait::normalizeValue()
++      // because we just need the scalar value.
++      $bundle_value = $values[$this->bundleKey];
++      if (!is_array($bundle_value)) {
++        // The bundle value is a scalar, use it as-is.
++        $bundle = $bundle_value;
++      }
++      elseif (is_numeric(array_keys($bundle_value)[0])) {
++        // The bundle value is a field item list array, keyed by delta.
++        $bundle = reset($bundle_value[0]);
++      }
++      else {
++        // The bundle value is a field item array, keyed by the field's main
++        // property name.
++        $bundle = reset($bundle_value);
++      }
+     }
+     $entity = new $this->entityClass([], $this->entityTypeId, $bundle);
+     $this->initFieldValues($entity, $values);
+diff --git a/core/tests/Drupal/KernelTests/Core/Entity/ContentEntityStorageBaseTest.php b/core/tests/Drupal/KernelTests/Core/Entity/ContentEntityStorageBaseTest.php
+new file mode 100644
+index 0000000000..54bbea515c
+--- /dev/null
++++ b/core/tests/Drupal/KernelTests/Core/Entity/ContentEntityStorageBaseTest.php
+@@ -0,0 +1,63 @@
++<?php
++
++namespace Drupal\KernelTests\Core\Entity;
++
++use Drupal\KernelTests\KernelTestBase;
++
++/**
++ * @coversDefaultClass \Drupal\Core\Entity\ContentEntityStorageBase
++ *
++ * @group Entity
++ */
++class ContentEntityStorageBaseTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = ['entity_test', 'user'];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp() {
++    parent::setUp();
++
++    $this->installEntitySchema('entity_test');
++    $this->installEntitySchema('user');
++  }
++
++  /**
++   * @covers ::create
++   *
++   * @dataProvider providerTestCreate
++   */
++  public function testCreate($bundle) {
++    $storage = $this->container->get('entity_type.manager')->getStorage('entity_test');
++
++    $entity = $storage->create(['type' => $bundle]);
++    $this->assertEquals('test_bundle', $entity->bundle());
++  }
++
++  /**
++   * Provides test data for testCreate().
++   */
++  public function providerTestCreate() {
++    return [
++      ['scalar' => 'test_bundle'],
++      ['array keyed by delta' => [0 => ['value' => 'test_bundle']]],
++      ['array keyed by main property name' => ['value' => 'test_bundle']],
++    ];
++  }
++
++  /**
++   * @covers ::create
++   */
++  public function testReCreate() {
++    $storage = $this->container->get('entity_type.manager')->getStorage('entity_test');
++
++    $values = $storage->create(['type' => 'test_bundle'])->toArray();
++    $entity = $storage->create($values);
++    $this->assertEquals('test_bundle', $entity->bundle());
++  }
++
++}

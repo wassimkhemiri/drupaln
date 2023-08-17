@@ -1,5 +1,5 @@
 /* jslint white:true, multivar, this, browser:true getModalDismissValue */
-/* global getModalDismissValue */
+/* global getModalDismissValue, FILE_UPLOAD_MAX_SIZE, dxpr_builder_alert */
 
 /**
  * @file This file is the glue between Drupal and DXPR Builder
@@ -26,7 +26,7 @@
           "the <a href='@dxpr_builder_settings'>DXPR Builder settings form</a>.",
         {
           "@dxpr_builder_settings": Drupal.url(
-            "/admin/dxpr_studio/dxpr_builder/settings"
+            "admin/dxpr_studio/dxpr_builder/settings"
           ),
         }
       );
@@ -165,7 +165,12 @@
 
       input[0].setAttribute("data-uuid", eb);
 
-      const mediaBrowserHTML = `
+      // remove old modal
+      let mediaBrowserHTML = document.getElementById("az-media-modal");
+      if (mediaBrowserHTML) mediaBrowserHTML.remove();
+
+      // create new modal
+      mediaBrowserHTML = `
       <div id="az-media-modal" class="modal dxpr-builder-ui" style="display:none">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -187,6 +192,7 @@
       </div>
       `;
 
+      // display the modal
       $(mediaBrowserHTML).modal("show");
     });
   }
@@ -306,6 +312,8 @@
     }
 
     sortFilenames(imageList, ",");
+
+    liveEditingManager.update();
   }
 
   /**
@@ -346,6 +354,7 @@
         .sortable({
           stop() {
             sortFilenames($(this), delimiter);
+            liveEditingManager.update();
           },
         });
     }
@@ -390,6 +399,7 @@
           if (typeof callback === "function") {
             callback(res);
           }
+          liveEditingManager.update();
         })
         .fail(() => {
           callback("");
@@ -517,6 +527,7 @@
         $("<input/>", {
           type: "file",
           class: "image_upload",
+          accept: ".gif,.jpg,.jpeg,.png,.svg",
           "data-url": drupalSettings.dxprBuilder.fileUploadUrl,
         })
           .insertBefore(input)
@@ -570,6 +581,7 @@
         $("<input/>", {
           type: "file",
           class: "video_upload",
+          accept: ".webm,.ogv,.ogg,.mp4",
           "data-url": drupalSettings.dxprBuilder.fileUploadUrl,
         })
           .insertBefore(input)
@@ -600,6 +612,20 @@
                 input.after(
                   `<div class="alert alert-danger" role="alert">${data.result.error}</div>`
                 );
+              }
+
+              liveEditingManager.update();
+            },
+            fail(e, data) {
+              if (data.jqXHR.status === 413) {
+                dxpr_builder_alert(
+                  `The uploaded video is too large. Max size is ${FILE_UPLOAD_MAX_SIZE}MB`,
+                  {
+                    type: "danger",
+                  }
+                );
+              } else {
+                dxpr_builder_alert(data.jqXHR.statusText, { type: "danger" });
               }
             },
           });

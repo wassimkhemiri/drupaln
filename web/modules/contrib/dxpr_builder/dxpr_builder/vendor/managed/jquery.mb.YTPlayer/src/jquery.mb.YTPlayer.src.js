@@ -570,7 +570,7 @@ function iOSversion() {
 				YTPlayer.wrapper.append(playerBox);
 				playerBox.after(YTPlayer.overlay);
 
-				if (YTPlayer.isPlayer) {
+				if (YTPlayer.isPlayer && YTPlayer.opt.isStandAlonePlayer) {
 					YTPlayer.inlineWrapper = jQuery('<div/>').addClass('inline-YTPlayer');
 
 					YTPlayer.inlineWrapper.css({
@@ -860,7 +860,7 @@ function iOSversion() {
 							}
 						});
 
-						$YTPlayer.on('YTPlayerIsReady_' + YTPlayer.id, function () {
+						$YTPlayer.one('YTPlayerIsReady_' + YTPlayer.id, function () {
 
 							if (YTPlayer.isReady)
 								return this;

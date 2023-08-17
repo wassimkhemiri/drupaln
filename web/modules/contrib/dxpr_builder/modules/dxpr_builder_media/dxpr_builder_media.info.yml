@@ -2,7 +2,7 @@ name: DXPR Builder Media
 type: module
 description: 'This module provides a media browser for DXPR Builder.'
 package: DXPR
-core_version_requirement: ^9.3 || ^10
+core_version_requirement: '>=9.3'
 
 dependencies:
   - inline_entity_form:inline_entity_form
@@ -27,7 +27,7 @@ config_devel:
   - image.style.dxpr_builder_media_thumbnail
   - entity_browser.browser.dxpr_builder_media_modal
 
-# Information added by Drupal.org packaging script on 2022-12-16
-version: '2.2.0'
+# Information added by Drupal.org packaging script on 2023-08-03
+version: '2.2.8'
 project: 'dxpr_builder'
-datestamp: 1671201599
+datestamp: 1691061170

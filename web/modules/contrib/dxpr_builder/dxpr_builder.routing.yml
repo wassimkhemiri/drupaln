@@ -164,3 +164,11 @@ dxpr_builder.user_licenses.sites:
     _title: 'Sites'
   requirements:
     _permission: 'administer dxpr builder configuration'
+
+dxpr_builder.licensed_content:
+  path: '/admin/dxpr_studio/dxpr_builder/content'
+  defaults:
+    _controller: 'Drupal\dxpr_builder\Controller\PageController::licensedContentPage'
+    _title: 'Content items'
+  requirements:
+    _permission: 'administer dxpr builder configuration'

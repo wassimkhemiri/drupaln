@@ -34,6 +34,7 @@ services:
       - '@messenger'
       - '@extension.list.module'
       - '@extension.list.theme'
+      - '@logger.factory'
 
   dxpr_builder.file.upload:
     class: Drupal\dxpr_builder\Service\UploadHandler
@@ -53,6 +54,7 @@ services:
       - '@current_user'
       - '@messenger'
       - '@datetime.time'
+      - '@logger.factory'
     tags:
       - {name: event_subscriber}
 
